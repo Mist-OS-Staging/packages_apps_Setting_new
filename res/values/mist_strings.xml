@@ -320,5 +320,8 @@
 
     <!-- Confirm dialog -->
     <string name="confirm_before_enable_title">Continue to enable?</string>
->>>>>>> 51235a16f52 (Settings: Implement RefreshRateManager [2/2]):res/values/lunaris_strings.xml
+    
+    <!-- Pocket mode -->
+    <string name="proximity_wake_title">Pocket mode</string>
+    <string name="proximity_wake_summary">Check the proximity sensor prior to waking up screen</string>
 </resources>
