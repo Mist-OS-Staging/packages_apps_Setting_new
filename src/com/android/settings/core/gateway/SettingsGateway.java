@@ -224,6 +224,7 @@ import com.android.settings.wifi.savedaccesspoints2.SavedAccessPointsWifiSetting
 import com.android.settings.wifi.tether.WifiTetherSettings;
 
 import org.mist.settings.MistSettings;
+import org.evolution.settings.fragments.miscellaneous.SmartPixels;
 
 public class SettingsGateway {
 
@@ -437,6 +438,7 @@ public class SettingsGateway {
             SafetyCenterQsFragment.class.getName(),
             MistSettings.class.getName(),
             PrivateDnsSettings.class.getName(),
+            SmartPixels.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -486,5 +488,6 @@ public class SettingsGateway {
             Settings.ShadeSettingsActivity.class.getName(),
             Settings.MistSettingsActivity.class.getName(),
             Settings.PrivateDnsSettingsActivity.class.getName(),
+            Settings.SmartPixelsActivity.class.getName(),
     };
 }
