@@ -19,4 +19,36 @@
     <string name="device_market_name">Market Name</string>
     <string name="soc_model">SoC Model</string>
     <string name="total_ram">Total RAM</string>
+
+    <!-- Device SKU -->
+    <string name="hardware_sku">Hardware SKU</string>
+
+    <!-- USB configuration -->
+    <string name="usb_default_config_title">USB configuration</string>
+    <string name="usb_default_config_summary">Choose the default behavior when connected to a device via USB</string>
+
+    <!-- Deep Sleep percentage in device info -->
+    <string name="status_sleep_time">Deep sleep</string>
+
+    <!-- Face enroll finish text -->
+    <string name="security_settings_face_enroll_finish_description_with_bp">Now you can use your face to unlock your phone or verify it’s you, like when you sign in to apps or approve a purchase</string>
+
+    <!-- Display settings screen, setting option to toggle sleep on face down -->
+    <string name="face_down_sleep_title">Face down detection</string>
+    <!-- Display settings screen, setting option summary to toggle sleep on face down -->
+    <string name="face_down_sleep_summary">Turn off screen after a short period when device is flipped over</string>
+
+    <!-- Ambient wake toggles -->
+    <string name="doze_gesture_ambient_title">Show Ambient</string>
+    <string name="doze_gesture_ambient_summary">Show Ambient Display instead of fully waking the screen up</string>
+    <string name="gesture_wake_ambient">Show Ambient</string>
+    <string name="gesture_wake">Fully wake</string>
+
+    <!-- Wake gestures haptics -->
+    <string name="doze_gesture_vibrate_title">Haptic feedback</string>
+    <string name="doze_gesture_vibrate_summary">Vibrate when this gesture is invoked</string>
+
+    <!-- Pulse on music track change -->
+    <string name="pulse_on_new_tracks_title">Music ticker</string>
+    <string name="pulse_on_new_tracks_summary">Show Ambient Display when a new music track is played</string>
 </resources>
