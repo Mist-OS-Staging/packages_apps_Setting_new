@@ -103,7 +103,7 @@
             android:fragment="com.android.settings.display.ScreenTimeoutSettings"
             settings:controller="com.android.settings.display.ScreenTimeoutPreferenceController"/>
 
-        <org.evolution.settings.preferences.DeviceConfigSwitchPreference
+        <org.mist.settings.preferences.DeviceConfigSwitchPreference
             android:key="flip_to_screen_off"
             android:title="@string/face_down_sleep_title"
             android:summary="@string/face_down_sleep_summary"
