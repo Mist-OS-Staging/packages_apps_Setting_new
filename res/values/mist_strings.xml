@@ -204,4 +204,10 @@
     <!-- Fingerprint lockout -->
     <string name="fingerprint_lockout_title">Disable fingerprint lockout</string>
     <string name="fingerprint_lockout_summary">Deactivates 30 second timeout as well as permanent lockout after multiple failed fingerprint unlock attempts</string>
+
+    <!-- Back gesture height -->
+    <string name="back_height_low_label">Full</string>
+    <string name="back_height_high_label">Bottom</string>
+    <string name="back_height_title">Back gesture height</string>
+    <string name="back_height_summary">Screen height valid for back gesture</string>
 </resources>
