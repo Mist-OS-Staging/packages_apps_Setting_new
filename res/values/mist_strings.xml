@@ -117,4 +117,7 @@
     <string name="battery_saver_group_purpose" translatable="false">battery_saver_group</string>
     <string name="battery_saver_reminder_entry_purpose" translatable="false">battery_saver_reminder_entry</string>
     <string name="battery_saver_schedule_category_purpose" translatable="false">battery_saver_schedule_category</string>
+
+    <!-- Deep Sleep percentage in device info -->
+    <string name="status_sleep_time">Deep sleep</string>
 </resources>
