@@ -67,20 +67,6 @@
     <!-- Default Timeouts -->
     <string name="custom_timeout_summary_1hour_def">1 hour (Default)</string>
 
-   <!-- Double tap to sleep -->
-   <string name="double_tap_screen_to_sleep_summary">Double tap an empty space on the lock screen to turn off the screen.</string>
-   <string name="double_tap_screen_to_sleep_title">Double tap to turn off screen</string>
-   <string name="keywords_double_tap_screen_to_sleep">double tap to sleep, lock screen</string>
-
-   <!-- Refresh rate -->
-    <string name="refresh_rate_title">Refresh rate</string>
-    <string name="refresh_rate_summary_vrr_off">%d Hz</string>
-    <string name="refresh_rate_summary_vrr_on">%d Hz (Adaptive)</string>
-    <string name="refresh_rate_vrr_title">Adaptive refresh rate</string>
-    <string name="refresh_rate_vrr_summary">Automatically lower the refresh rate when the display is idle, to save power. May cause flickering or color shift on certain displays</string>
-    <string name="refresh_rate_footer">A higher refresh rate makes the display smoother, but increases power consumption</string>
-    <string name="keywords_refresh_rate">refresh, rate, smooth, peak, 60hz, 90hz, 120hz, 144hz, 165hz</string>
-
    <!-- USB configuration -->
     <string name="usb_default_config_title">USB configuration</string>
     <string name="usb_default_config_summary">Choose the default behavior when connected to a device via USB</string>
@@ -172,8 +158,6 @@
     <string name="reading_engine_mode_title">Comfort display (Reading mode)</string>
     <string name="display_engine_default">Default</string>
     <string name="display_engine_mode_footer_text">Inspired by Sony\'s Bravia/X-Reality engine, the Display Engine features Vivid mode for enhanced brightness and color saturation, X-Reality mode for improved detail and color accuracy, and Triluminous mode for a wider color range.</string>
-<<<<<<< HEAD:res/values/mist_strings.xml
-=======
 
     <!-- Double tap to sleep -->
    <string name="double_tap_screen_to_sleep_summary">Double tap an empty space on the lock screen to turn off the screen.</string>
@@ -192,5 +176,9 @@
     <!-- Copy to clipboard -->
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="longpress_to_clipboard">Long-press to copy</string>
->>>>>>> 214de6ef949 (Settings: Long press to copy wifi password):res/values/evolution_strings.xml
+
+    <!-- AdGuard DNS Option -->
+    <string name="private_dns_mode_adguard" translatable="false">AdGuard DNS</string>
+    <!-- AdGuard DNS hostname -->
+    <string name="private_dns_hostname_adguard" translatable="false">dns.adguard.com</string>
 </resources>
