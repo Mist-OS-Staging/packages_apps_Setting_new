@@ -150,6 +150,7 @@ import com.android.settings.location.WifiScanningFragment;
 import com.android.settings.network.MobileNetworkListFragment;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.network.NetworkProviderSettings;
+import com.android.settings.network.PrivateDnsSettings;
 import com.android.settings.network.apn.ApnEditor;
 import com.android.settings.network.apn.ApnSettings;
 import com.android.settings.network.telephony.CellularSecuritySettingsFragment;
@@ -435,6 +436,7 @@ public class SettingsGateway {
             SafetyCenterFragment.class.getName(),
             SafetyCenterQsFragment.class.getName(),
             MistSettings.class.getName(),
+            PrivateDnsSettings.class.getName(),
     };
 
     public static final String[] SETTINGS_FOR_RESTRICTED = {
@@ -483,5 +485,6 @@ public class SettingsGateway {
             Settings.NavigationModeSettingsActivity.class.getName(),
             Settings.ShadeSettingsActivity.class.getName(),
             Settings.MistSettingsActivity.class.getName(),
+            Settings.PrivateDnsSettingsActivity.class.getName(),
     };
 }
