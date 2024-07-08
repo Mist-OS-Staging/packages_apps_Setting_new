@@ -60,6 +60,7 @@ android_library {
         "src/**/*.kt",
         "Mistify/src/**/*.java",
         "Mistify/src/**/*.kt",
+        "src/**/*.aidl",
     ],
     exclude_srcs: [
         "src/com/android/settings/biometrics/fingerprint2/lib/**/*.kt",
