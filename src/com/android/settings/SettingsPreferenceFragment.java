@@ -63,7 +63,7 @@ import com.android.settingslib.preference.PreferenceScreenCreator;
 import com.android.settingslib.search.Indexable;
 import com.android.settingslib.widget.LayoutPreference;
 
-import org.lunaris.settings.preferences.CustomDialogPref;
+import org.mist.settings.preferences.CustomDialogPref;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.setupcompat.util.WizardManagerHelper;
