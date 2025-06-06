@@ -203,12 +203,6 @@
             android:summary="@string/display_white_balance_summary"
             settings:controller="com.android.settings.display.DisplayWhiteBalancePreferenceController"/>
 
-        <ListPreference
-            android:key="max_refresh_rate"
-            android:title="@string/max_refresh_rate_title"
-            android:summary="@string/summary_placeholder"
-            settings:controller="com.android.settings.display.PeakRefreshRateListPreferenceController" />
-
         <SwitchPreferenceCompat
             android:key="peak_refresh_rate"
             android:title="@string/peak_refresh_rate_title"
@@ -221,12 +215,6 @@
             android:summary="@string/auto_hbm_enabled_summary"
             android:fragment="com.android.settings.display.Hbm"
             settings:controller="com.android.settings.display.HbmSettingsPreferenceController" />
-
-        <Preference
-            android:key="refresh_rate"
-            android:title="@string/refresh_rate_settings_title"
-            android:fragment="com.android.settings.display.RefreshRateSettings"
-            settings:controller="com.android.settings.display.RefreshRateSettingsPreferenceController" />
 
         <SwitchPreferenceCompat
             android:key="show_operator_name"
