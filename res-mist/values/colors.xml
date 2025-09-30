@@ -29,4 +29,14 @@
     <!-- Settings dashboard -->
     <color name="preference_color">@*android:color/system_neutral1_100</color>
     <color name="dashboard_card_header">@*android:color/system_neutral2_50</color>
+
+    <color name="black">#FF000000</color>
+    <color name="user_crd_bg">#2A000000</color>
+    <color name="crd_bg">@android:color/system_neutral1_0</color>
+    <color name="off_black">#86000000</color>
+    <color name="pureBlack">#000000</color>
+    <color name="green_percentage">#02C205</color>
+    <color name="progress_background">#E0E0E0</color>
+    <color name="orange_percentage">#CF6000</color>
+    <color name="red_percentage">#BA0C00</color>
 </resources>
