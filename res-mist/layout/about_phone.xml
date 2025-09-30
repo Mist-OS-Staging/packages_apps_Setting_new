@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/hyper_mod"
+    android:orientation="vertical">
+
+    <!-- Wallpaper layout -->
+
+    <LinearLayout
+        android:id="@+id/quick_access_widgets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0">
+
+        <RelativeLayout
+            android:id="@+id/background"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/single_background_top"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="true">
+
+            <com.mist.utils.AnimateWallpaperView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="38dp"
+                android:textColor="?android:attr/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/frame_build_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                android:padding="6dp"
+                android:layout_below="@+id/device_name"
+                android:background="@drawable/status_chip_bg">
+
+                <ImageView
+                    android:id="@+id/status_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/mist_build_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingStart="10dp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/colorControlNormal"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- version layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        android:background="@drawable/top_menu_top_right"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mistos_version"
+                    android:textColor="@color/settingslib_materialColorOnSurface" />
+
+                <TextView
+                    android:id="@+id/mist_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/settingslib_materialColorOnSurface"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mist_maintainer"
+                    android:textColor="@color/settingslib_materialColorOnSurface" />
+
+                <TextView
+                    android:id="@+id/mantainer_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/settingslib_materialColorOnSurface"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mist_logo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/mist_logo_single"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
+    <!-- Android Version layout -->
+
+    <LinearLayout
+        android:id="@+id/android_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/top_menu_top"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0">
+
+        <RelativeLayout
+            android:id="@+id/android_bar_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:layout_gravity="center"
+            android:clipToPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/android_version"
+                    android:textColor="@color/settingslib_materialColorOnSurface" />
+
+                <TextView
+                    android:id="@+id/android_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:text="16.0 | Baklava"
+                    android:textColor="@color/settingslib_materialColorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- 2nd header Layout -->
+
+    <LinearLayout
+        android:id="@+id/device_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/top_menu_top"
+        android:orientation="vertical"
+        android:layout_weight="0">
+
+        <RelativeLayout
+            android:id="@+id/device_bar_info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/security_patch"
+                    android:textColor="@color/settingslib_materialColorOnSurface" />
+
+                <TextView
+                    android:id="@+id/security_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/settingslib_materialColorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/storage_info"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Storage:"
+                    android:textColor="@color/settingslib_materialColorOnSurface"
+                    android:layout_marginEnd="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/storage_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/settingslib_materialColorOnSurface"
+                        android:textSize="15sp" />
+
+                    <ProgressBar
+                        android:id="@+id/rom_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_weight="1"
+                        android:layout_width="150dp"
+                        android:layout_height="6dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="end"
+                        android:progressDrawable="@drawable/custom_progress_bar"
+                        android:max="100" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+</LinearLayout>
+
+    <!-- Device Spec -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/clean_base"
+        android:baselineAligned="false"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="true">
+
+        <TextView
+            android:id="@+id/processor_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_processor"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/off_black" />
+
+        <TextView
+            android:id="@+id/soc_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/processor_title"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="2dp"
+            android:textStyle="bold"
+            android:textColor="@color/pureBlack"
+            android:textSize="15sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lockscreen"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:clipChildren="true"
+            android:clipToOutline="true"
+            android:clipToPadding="true">
+
+            <TextView
+                android:id="@+id/platform_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@string/platform_title"
+                android:layout_marginStart="2dp"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/platform_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/platform_title"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold"
+                android:textColor="@color/pureBlack"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+            <TextView
+                android:id="@+id/resolution_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_display"
+                android:layout_marginStart="2dp"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/resolution_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/pureBlack"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/resolution_title"
+                android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/screen_size_title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+            <TextView
+                android:id="@+id/screen_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/screen_size"
+                android:layout_marginStart="2dp"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/screen_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/pureBlack"
+                android:layout_below="@+id/screen_title"
+                android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+                <TextView
+                    android:id="@+id/battery_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_battery"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/off_black" />
+
+                <TextView
+                    android:id="@+id/battery_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/pureBlack"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_below="@+id/battery_title"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ram_size_title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+                <TextView
+                    android:id="@+id/ram_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RAM:"
+                    android:textColor="@color/off_black"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="22dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ram_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginStart="2dp"
+                        android:layout_below="@+id/ram_title"
+                        android:textColor="@color/pureBlack"
+                        android:textSize="15sp" />
+
+                    <ProgressBar
+                        android:id="@+id/ram_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="6.5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="2dp"
+                        android:progressDrawable="@drawable/custom_progress_bar"
+                        android:max="100" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+            <TextView
+                android:id="@+id/camera_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_camera_rear"
+                android:layout_marginStart="2dp"
+                android:textColor="@color/off_black" />
+
+                <TextView
+                    android:id="@+id/rear_camera_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/pureBlack"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_below="@+id/camera_title"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/front_camera_bar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:clipChildren="true"
+                android:clipToOutline="true"
+                android:clipToPadding="true">
+
+                <TextView
+                    android:id="@+id/front_camera_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/front_camer"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/off_black" />
+
+                <TextView
+                    android:id="@+id/front_camera_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/pureBlack"
+                    android:layout_below="@+id/front_camera_title"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/clean_base"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/build_date"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/build_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textStyle="bold"
+                android:textColor="@color/pureBlack"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_kernel_version"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/kernel_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_build_number"
+                android:textColor="@color/off_black" />
+
+            <TextView
+                android:id="@+id/build_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

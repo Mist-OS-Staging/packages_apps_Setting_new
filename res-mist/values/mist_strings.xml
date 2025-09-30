@@ -28,4 +28,22 @@
 
     <!-- Maintainer string - default -->
     <string name="maintainer_string">Unknown</string>
+    <string name="firmware_category_title">Firmware info</string>
+
+    <!-- About Phone -->
+    <string name="mistos_version">MistOS Version</string>
+    <string name="mist_maintainer">MistOS Maintainer</string>
+    <string name="android_version">Android Version</string>
+    <string name="text_processor">Processor</string>
+    <string name="text_display">Resolution</string>
+    <string name="text_battery">Battery Capacity</string>
+    <string name="text_camera_rear">Rear camera</string>
+    <string name="screen_size">Screen size</string>
+    <string name="platform_title">Platform</string>
+    <string name="build_date">Build date</string>
+    <string name="security_patch">Android security update</string>
+    <string name="text_kernel_version">kernel version</string>
+    <string name="text_build_number">Build number</string>
+    <string name="front_camer">Front camera</string>
+    <string name="ram_active_label">Active</string>
 </resources>
