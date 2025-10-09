@@ -15,6 +15,11 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="gms_services_title">Google services</string>
+    <string name="gms_services_summary">Google services and preferences</string>
+    <string name="wellbeing_title">Digital wellbeing</string>
+    <string name="wellbeing_summary">Digital wellbeing and parental controls</string>
+
     <!-- Ramping ringer -->
     <string name="ramping_ringer_duration_title">Ramping duration</string>
     <string name="ramping_ringer_duration_summary">Time it takes to ramp to the full volume</string>
