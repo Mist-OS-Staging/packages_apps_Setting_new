@@ -61,21 +61,23 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
         android:touchscreenBlocksFocus="false"
         android:keyboardNavigationCluster="false">
         <LinearLayout
             android:id="@+id/app_bar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/search_bar_container_top_padding"
-            android:paddingBottom="16dp"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <include layout="@layout/search_bar_unified_version"/>
+            <include
+                android:id="@+id/homepage_app_bar_regular_phone_view"
+                layout="@layout/settings_homepage_app_bar_regular_phone_layout"/>
 
+            <include
+                android:id="@+id/homepage_app_bar_two_pane_view"
+                layout="@layout/settings_homepage_app_bar_two_pane_layout"
+                android:visibility="gone"/>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

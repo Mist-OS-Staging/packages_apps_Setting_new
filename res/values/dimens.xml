@@ -17,6 +17,9 @@
 <resources>
     <dimen name="match_parent">-1px</dimen>
 
+    <dimen name="avatar_margin_start">10dp</dimen>
+    <dimen name="avatar_length">40dp</dimen>
+    <dimen name="app_bar_title_margin">24dp</dimen>
     <dimen name="app_icon_size">40dip</dimen>
     <dimen name="min_tap_target_size">48dp</dimen>
     <dimen name="screen_margin_sides">64dip</dimen>
@@ -90,9 +93,6 @@
     <dimen name="search_bar_container_top_padding">8dp</dimen>
 
     <!-- Avatar -->
-    <dimen name="avatar_length">48dp</dimen>
-    <dimen name="avatar_margin_top">56dp</dimen>
-    <dimen name="avatar_margin_end">24dp</dimen>
     <dimen name="multiple_users_avatar_size">20dp</dimen>
     <dimen name="multiple_users_user_icon_size">40dp</dimen>
 
