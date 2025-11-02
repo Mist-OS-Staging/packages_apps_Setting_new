@@ -26,13 +26,16 @@ import static com.android.settings.SettingsActivity.EXTRA_USER_HANDLE;
 import android.animation.LayoutTransition;
 import android.app.ActivityManager;
 import android.app.settings.SettingsEnums;
+import android.app.WallpaperManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.content.pm.UserInfo;
 import android.content.res.Configuration;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
@@ -40,14 +43,24 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.ArraySet;
+import android.os.SystemProperties;
+import android.os.Build;
 import android.util.FeatureFlagUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toolbar;
+
+import android.widget.TextView;
+import android.widget.Button;
+import android.graphics.drawable.Drawable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.android.settings.Utils;
+import android.animation.Animator;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
@@ -64,6 +77,8 @@ import androidx.window.embedding.SplitInfo;
 import androidx.window.embedding.SplitRule;
 import androidx.window.java.embedding.SplitControllerCallbackAdapter;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import com.android.settings.R;
 import com.android.settings.Settings;
 import com.android.settings.SettingsActivity;
@@ -78,7 +93,6 @@ import com.android.settings.flags.Flags;
 import com.android.settings.homepage.contextualcards.ContextualCardsFragment;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.safetycenter.SafetyCenterManagerWrapper;
-import com.android.settingslib.Utils;
 import com.android.settingslib.core.lifecycle.HideNonSystemOverlayMixin;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
@@ -123,6 +137,12 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     private SplitControllerCallbackAdapter mSplitControllerAdapter;
     private SplitInfoCallback mCallback;
     private boolean mAllowUpdateSuggestion = true;
+
+    LinearLayout linearLayout, topContent;
+    Button btnMistUpdater;
+    ImageView avatarView, btnMistVersion, wallpaperView, statusChip;
+    TextView mistVersion, mistMaintainer, mistDevice, mistBuildDate, mistBuildType, checkGapps;
+    LottieAnimationView welcomeAnimation;
 
     /** A listener receiving homepage loaded events. */
     public interface HomepageLoadedListener {
@@ -436,6 +456,14 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                                 SettingsEnums.SETTINGS_HOMEPAGE);
             }
         }
+
+        btnMistVersion = findViewById(R.id.btnMistVersion);
+        btnMistVersion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBottomSheetDialog();
+                }
+            });
     }
 
     private void initAvatarView() {
@@ -454,6 +482,98 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                 getLifecycle().addObserver(new AvatarViewMixin(this, avatarTwoPaneView));
             }
         }
+     }
+  }
+        private void showBottomSheetDialog() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.MistBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(R.layout.mist_bottom_sheet);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        wallpaperView = bottomSheetDialog.findViewById(R.id.wallpaper_view);
+        wallpaperView.setImageDrawable(wallpaperDrawable);
+        wallpaperView.setImageAlpha(140);
+
+        statusChip = bottomSheetDialog.findViewById(R.id.status_chip);
+
+        linearLayout = bottomSheetDialog.findViewById(R.id.frame_build_type);
+        topContent = bottomSheetDialog.findViewById(R.id.top_content_holder);
+
+        welcomeAnimation = bottomSheetDialog.findViewById(R.id.welcome_animation);
+        playWelcomeAnim();
+
+        mistDevice = bottomSheetDialog.findViewById(R.id.mist_device);
+        mistVersion = bottomSheetDialog.findViewById(R.id.mist_version);
+        mistMaintainer = bottomSheetDialog.findViewById(R.id.mist_maintainer);
+        mistBuildDate = bottomSheetDialog.findViewById(R.id.mist_build_date);
+        mistBuildType = bottomSheetDialog.findViewById(R.id.mist_build_type);
+        checkGapps = bottomSheetDialog.findViewById(R.id.check_gapps);
+
+        String buildDate = SystemProperties.get("ro.build.date").substring(0,10);
+        String fullPackageName = SystemProperties.get("ro.mist.build.version");
+        mistDevice.setText(SystemProperties.get("ro.mist.device") + "(" + SystemProperties.get("ro.product.model") + ")");
+        mistVersion.setText("MistOS_v"
+                + SystemProperties.get("ro.mist.version.base")
+                + "-"
+                + SystemProperties.get("ro.mist.codename"));
+        mistMaintainer.setText(SystemProperties.get("ro.mistos.maintainer"));
+        mistBuildDate.setText(buildDate);
+        String buildType = SystemProperties.get("ro.mist.buildtype");
+        mistBuildType.setText(buildType);
+        checkGapps.setText(SystemProperties.get("ro.mist.packagetype"));
+
+        // Initialise intent for Mist Updater
+        btnMistUpdater = bottomSheetDialog.findViewById(R.id.btn_updater);
+
+        if(buildType.equals("OFFICIAL")){
+          btnMistUpdater.setVisibility(View.VISIBLE);
+        statusChip.setBackgroundResource(R.drawable.icon_official);
+          linearLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.mist_official_color)));
+        } else {
+          statusChip.setBackgroundResource(R.drawable.icon_unofficial);
+          linearLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.mist_unofficial_color)));  
+        }
+
+        assert btnMistUpdater != null;
+        btnMistUpdater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nIntent = new Intent(Intent.ACTION_MAIN);
+                nIntent.setClassName("org.mist.updater",
+                        "org.mist.updater.UpdatesActivity");
+                startActivity(nIntent);
+            }
+        });
+        bottomSheetDialog.show();
+    }
+
+    private void playWelcomeAnim() {
+        welcomeAnimation.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                linearLayout.setVisibility(View.INVISIBLE);
+                topContent.setVisibility(View.INVISIBLE);
+                welcomeAnimation.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                welcomeAnimation.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+                topContent.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                // Yes, we need more useless boilerplate
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                // Another Blank Space - Taylor swift
+            }
+        });
     }
 
     private void updateHomepageUI() {

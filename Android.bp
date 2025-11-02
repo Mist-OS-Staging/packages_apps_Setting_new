@@ -71,6 +71,7 @@ android_library {
 
     resource_dirs: [
         "res",
+        "res-mist",
         "res-export", // for external usage
         "res-product",
         "Mistify/res",
