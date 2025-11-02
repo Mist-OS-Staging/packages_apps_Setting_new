@@ -21,16 +21,6 @@
     android:key="top_level_settings">
 
     <com.android.settings.widget.HomepagePreference
-        android:fragment="org.mist.settings.MistSettings"
-        android:icon="@drawable/ic_settings_mistify"
-        android:key="top_level_mistify"
-        android:order="-160"
-        android:title="@string/mist_dashboard_title"
-        android:summary="@string/mist_dashboard_summary"
-        settings:highlightableMenuKey="@string/menu_key_mist"
-        settings:controller="org.mist.settings.TopLevelMistSettingsPreferenceController"/>
-
-    <com.android.settings.widget.HomepagePreference
         android:fragment="com.android.settings.network.NetworkDashboardFragment"
         android:icon="@drawable/ic_settings_wireless"
         android:key="top_level_network"

@@ -54,6 +54,7 @@
         android:layout_marginStart="10dp"
         android:padding="5dp"
         android:src="@drawable/logo"
+        android:tint="@*android:color/accent_device_default"
         android:foreground="@drawable/button_ripple_radius"
         android:background="@drawable/rounded_bg"/>
 
