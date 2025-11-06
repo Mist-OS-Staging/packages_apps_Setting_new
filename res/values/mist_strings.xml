@@ -22,6 +22,9 @@
     <string name="mist_version_default">Unknown</string>
     <string name="keywords_mist_version">MistOS version, mist version</string>
 
+    <!-- MistOS  Maintainer -->
+    <string name="MistOS_maintainer">MistOS Maintainer</string>
+
     <!-- Screenshot shutter -->
     <string name="screenshot_shutter_sound_title">Screenshot sound</string>
 
