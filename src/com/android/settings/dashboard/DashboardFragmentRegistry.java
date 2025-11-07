@@ -51,7 +51,7 @@ import com.android.settings.supervision.SupervisionDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
 import com.android.settingslib.drawer.CategoryKey;
 
-import org.mist.settings.MistifySettings;
+import org.mist.settings.MistSettings;
 
 import java.util.Map;
 
