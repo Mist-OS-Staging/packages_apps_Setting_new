@@ -25,6 +25,7 @@
     <string name="version">Version</string>
     <string name="android">Android Version</string>
     <string name="android_summary">Baklava | 16.0</string>
+    <string name="firmware_info">Firmware</string>
 
     <!-- Maintainer string - default -->
     <string name="maintainer_string">Unknown</string>

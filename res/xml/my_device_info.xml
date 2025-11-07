@@ -29,18 +29,34 @@
         android:selectable="false" />
 
     <PreferenceCategory
-        android:key="basic_info_category"
+        android:key="firmware_category"
         android:selectable="false"
-        android:title="@string/my_device_info_basic_info_category_title">
+        android:title="@string/firmware_info">
+
+        <!-- Android version -->
+        <Preference
+            android:key="firmware_version"
+            android:order="1"
+            android:title="@string/firmware_version"
+            android:summary="@string/summary_placeholder"
+            android:fragment="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionSettings"
+            settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionPreferenceController"/>
 
         <!-- Device name -->
         <com.android.settings.widget.ValidatedEditTextPreference
             android:key="device_name"
-            android:order="1"
+            android:order="2"
             android:title="@string/my_device_info_device_name_preference_title"
             android:summary="@string/summary_placeholder"
             settings:controller="com.android.settings.deviceinfo.DeviceNamePreferenceController"
             settings:enableCopying="true"/>
+
+     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="basic_info_category"
+        android:selectable="false"
+        android:title="@string/my_device_info_basic_info_category_title">
 
         <!-- Account name -->
         <Preference
@@ -110,15 +126,6 @@
             settings:enableCopying="true"
             settings:isPreferenceVisible="@bool/config_show_sim_info"
             settings:controller="com.android.settings.deviceinfo.imei.ImeiInfoPreferenceController"/>
-
-        <!-- Android version -->
-        <Preference
-            android:key="firmware_version"
-            android:order="42"
-            android:title="@string/firmware_version"
-            android:summary="@string/summary_placeholder"
-            android:fragment="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionSettings"
-            settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionPreferenceController"/>
 
     </PreferenceCategory>
 
