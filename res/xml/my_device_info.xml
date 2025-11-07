@@ -63,33 +63,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="legal_category"
-        android:title="@string/my_device_info_legal_category_title">
-
-        <!-- Legal information -->
-        <Preference
-            android:key="legal_container"
-            android:order="15"
-            android:title="@string/legal_information"
-            android:fragment="com.android.settings.LegalSettings"/>
-
-        <!-- Regulatory labels -->
-        <Preference
-            android:key="regulatory_info"
-            android:order="16"
-            android:title="@string/regulatory_labels">
-            <intent android:action="android.settings.SHOW_REGULATORY_INFO"
-                    android:targetPackage="${applicationId}"/>
-        </Preference>
-
-        <!-- Safety & regulatory manual -->
-        <Preference
-            android:key="safety_info"
-            android:order="17"
-            android:title="@string/safety_and_regulatory_info"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="device_detail_category"
         android:selectable="false"
         android:title="@string/my_device_info_device_details_category_title">
@@ -163,38 +136,6 @@
         android:key="device_identifiers_category"
         android:title="@string/my_device_info_device_identifiers_category_title">
 
-        <!--IP address -->
-        <Preference
-            android:key="wifi_ip_address"
-            android:order="44"
-            android:title="@string/wifi_ip_address"
-            android:summary="@string/summary_placeholder"
-            android:selectable="false"
-            settings:enableCopying="true"/>
-
-        <!-- Wi-Fi MAC address -->
-        <Preference
-            android:key="saved_accesspoints_wifi_mac_address"
-            android:order="45"
-            android:title="@string/status_wifi_mac_address"
-            android:summary="@string/view_saved_network"
-            android:fragment="com.android.settings.wifi.savedaccesspoints2.SavedAccessPointsWifiSettings2"
-            settings:enableCopying="false"/>
-
-        <!-- Factory Wi-Fi MAC address -->
-        <Preference
-            android:key="wifi_mac_address"
-            android:order="46"
-            android:title="@string/status_device_wifi_mac_address"
-            android:summary="@string/summary_placeholder"/>
-
-        <!-- Bluetooth address -->
-        <Preference
-            android:key="bt_address"
-            android:order="47"
-            android:title="@string/status_bt_address"
-            android:summary="@string/summary_placeholder"/>
-
         <!-- Device up time -->
         <Preference
             android:key="up_time"
@@ -210,29 +151,6 @@
             android:title="@string/status_sleep_time"
             android:summary="@string/summary_placeholder"
             android:selectable="false"/>
-
-        <!-- Manual -->
-        <Preference
-            android:key="manual"
-            android:order="50"
-            android:title="@string/manual">
-            <intent android:action="android.settings.SHOW_MANUAL"
-                    android:targetPackage="${applicationId}"/>
-        </Preference>
-
-        <!-- Feedback on the device -->
-        <Preference
-            android:key="device_feedback"
-            android:order="51"
-            android:title="@string/device_feedback"
-            settings:keywords="@string/keywords_device_feedback"/>
-
-        <!-- Device FCC equipment id -->
-        <Preference
-            android:key="fcc_equipment_id"
-            android:order="52"
-            android:title="@string/fcc_equipment_id"
-            android:summary="@string/summary_placeholder"/>
 
         <!-- Build number -->
         <Preference
