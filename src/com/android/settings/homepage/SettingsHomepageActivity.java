@@ -498,7 +498,6 @@ public class SettingsHomepageActivity extends FragmentActivity implements
             }
         }
      }
-  }
         private void showBottomSheetDialog() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.MistBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(R.layout.mist_bottom_sheet);

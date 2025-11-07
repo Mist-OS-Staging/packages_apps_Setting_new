@@ -1287,7 +1287,7 @@ public final class Utils extends com.android.settingslib.Utils {
     }
 
     public static String getAsiPackage(Context context) {
-        final boolean isGoogleAsiInstalled = com.android.internal.util.lunaris.Utils.isPackageInstalled(context,
+        final boolean isGoogleAsiInstalled = com.android.internal.util.mist.Utils.isPackageInstalled(context,
             context.getString(R.string.config_google_settingsintelligence_package_name));
         final String settingsIntelligencePkg = context.getString(isGoogleAsiInstalled
             ? R.string.config_google_settingsintelligence_package_name
