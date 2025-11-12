@@ -21,6 +21,11 @@
         android:name="com.google.android.settings.biometrics.face.POSTURE_GUIDANCE"
         android:protectionLevel="privileged|signature"/>
 
+    <queries>
+        <!-- Let the system see PayPal so we can detect and open its app -->
+        <package android:name="com.paypal.android.p2pmobile" />
+    </queries>
+
     <uses-permission android:name="android.permission.REQUEST_NETWORK_SCORES" />
     <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
@@ -152,6 +157,7 @@
     <uses-permission android:name="android.permission.ACCESS_KEYGUARD_SECURE_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_NETWORK_POLICY" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.GET_BACKGROUND_INSTALLED_PACKAGES" />
     <uses-permission android:name="android.permission.SATELLITE_COMMUNICATION" />
     <uses-permission android:name="android.permission.READ_SYSTEM_GRAMMATICAL_GENDER" />
@@ -5872,6 +5878,36 @@
             android:excludeFromRecents="true"
             android:taskAffinity="com.android.settings.applock"
             android:launchMode="singleTask" />
+
+
+        <!-- Support / Donation Activity -->
+    <activity
+        android:name="org.mist.settings.fragments.about.DonateActivity"
+        android:label="@string/mistos_donate_title"
+        android:theme="@style/SupportStyle"
+        android:enabled="true"
+        android:exported="true"
+        android:taskAffinity="com.android.settings"
+        android:parentActivityName="Settings">
+        <intent-filter android:priority="70">
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+
+    <!-- Donation Receiver -->
+    <receiver
+        android:name="org.mist.settings.fragments.about.DonateReceiver"
+        android:enabled="true"
+        android:exported="false">
+        <intent-filter android:priority="1000">
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+            <action android:name="android.intent.action.USER_UNLOCKED" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        <intent-filter>
+            <action android:name="org.mist.settings.action.DONATE_NUDGE" />
+        </intent-filter>
+    </receiver>
 
         <!-- This is the longest AndroidManifest.xml ever. -->
     </application>
