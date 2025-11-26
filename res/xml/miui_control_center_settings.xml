@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:title="@string/miui_control_center_title">
+
+    <SwitchPreference
+        android:key="miui_control_center_enabled"
+        android:title="@string/miui_control_center_title"
+        android:summary="@string/miui_control_center_summary"
+        android:defaultValue="false" />
+
+</PreferenceScreen>

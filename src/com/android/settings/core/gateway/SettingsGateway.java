@@ -223,6 +223,7 @@ import com.android.settings.wifi.tether.WifiTetherSettings;
 import org.derpfest.settings.display.refreshrate.ScreenRefreshRateFragment;
 
 import org.mist.settings.MistSettings;
+import org.lineageos.settings.mistify.MiuiControlCenterSettings;
 
 public class SettingsGateway {
 
@@ -432,6 +433,7 @@ public class SettingsGateway {
             PrivateDnsSettings.class.getName(),
             VolumeStepsSettings.class.getName(),
             MistSettings.class.getName(),
+            MiuiControlCenterSettings.class.getName(),
             RunningServices.class.getName(),
             ScreenRefreshRateFragment.class.getName(),
     };

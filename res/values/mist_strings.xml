@@ -440,4 +440,8 @@
     <string name="smart_battery_a11y_collapse_label">Collapse, Adaptive Battery</string>
     <string name="smart_battery_title">Adaptive Battery</string>
     <string name="unified_battery_saver_page_intro">Save power to help your phone battery last longer between charges</string>
+
+    <!-- MIUI Control Center -->
+    <string name="miui_control_center_title">MIUI Control Center</string>
+    <string name="miui_control_center_summary">Enable HyperOS-style control center with 4-column grid layout</string>
 </resources>

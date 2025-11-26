@@ -544,5 +544,6 @@ public class Settings extends SettingsActivity {
     public static class DevRunningServicesActivity extends SettingsActivity { /* empty */ }
 
     public static class MistSettingsActivity extends SettingsActivity {}
+    public static class MiuiControlCenterSettingsActivity extends SettingsActivity {}
     public static class ScreenRefreshRateActivity extends SettingsActivity {}
 }

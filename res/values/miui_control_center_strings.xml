@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="miui_control_center_title">MIUI Control Center</string>
+    <string name="miui_control_center_summary">Enable HyperOS-style Control Center for Quick Settings</string>
+</resources>

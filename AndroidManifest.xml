@@ -5825,6 +5825,20 @@
                        android:value="true" />
         </activity>
 
+        <!-- MIUI Control Center Settings -->
+        <activity android:name="Settings$MiuiControlCenterSettingsActivity"
+                  android:label="@string/miui_control_center_title"
+                  android:exported="true">
+            <intent-filter android:priority="1">
+                <action android:name="android.settings.MIUI_CONTROL_CENTER_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.lineageos.settings.mistify.MiuiControlCenterSettings" />
+            <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
+                       android:value="true" />
+        </activity>
+
         <!-- Face enroll -->
         <activity android:theme="@style/SudThemeGlif.Light"
                   android:name="com.google.android.settings.biometrics.face.FaceEnrollActivityDirector"
