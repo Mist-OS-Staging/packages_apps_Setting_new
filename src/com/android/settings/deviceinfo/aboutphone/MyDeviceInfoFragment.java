@@ -38,11 +38,6 @@ import com.android.settings.deviceinfo.BuildNumberPreferenceController;
 import com.android.settings.deviceinfo.DeviceNamePreferenceController;
 import com.android.settings.deviceinfo.SleeptimePreferenceController;
 import com.android.settings.deviceinfo.UptimePreferenceController;
-import com.android.settings.deviceinfo.imei.ImeiInfoPreferenceController;
-import com.android.settings.deviceinfo.simstatus.EidStatus;
-import com.android.settings.deviceinfo.simstatus.SimEidPreferenceController;
-import com.android.settings.deviceinfo.simstatus.SimStatusPreferenceController;
-import com.android.settings.deviceinfo.simstatus.SlotSimStatus;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.widget.EntityHeaderController;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -53,9 +48,6 @@ import com.android.settingslib.widget.LayoutPreference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -68,7 +60,6 @@ public class MyDeviceInfoFragment extends DashboardFragment
         implements DeviceNamePreferenceController.DeviceNamePreferenceHost {
 
     private static final String LOG_TAG = "MyDeviceInfoFragment";
-    private static final String KEY_EID_INFO = "eid_info";
 
     private final BroadcastReceiver mSimStateReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -149,46 +140,9 @@ public class MyDeviceInfoFragment extends DashboardFragment
             Context context, MyDeviceInfoFragment fragment, Lifecycle lifecycle) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
 
-        final ExecutorService executor = (fragment == null) ? null :
-                Executors.newSingleThreadExecutor();
-        androidx.lifecycle.Lifecycle lifecycleObject = (fragment == null) ? null :
-                fragment.getLifecycle();
-        final SlotSimStatus slotSimStatus = new SlotSimStatus(context, executor, lifecycleObject);
-
         controllers.add(new SleeptimePreferenceController(context, lifecycle));
         controllers.add(new UptimePreferenceController(context, lifecycle));
 
-        Consumer<String> imeiInfoList = imeiKey -> {
-            ImeiInfoPreferenceController imeiRecord =
-                    new ImeiInfoPreferenceController(context, imeiKey);
-            imeiRecord.init(fragment, slotSimStatus);
-            controllers.add(imeiRecord);
-        };
-
-        if (fragment != null) {
-            imeiInfoList.accept(ImeiInfoPreferenceController.DEFAULT_KEY);
-        }
-
-        for (int slotIndex = 0; slotIndex < slotSimStatus.size(); slotIndex ++) {
-            SimStatusPreferenceController slotRecord =
-                    new SimStatusPreferenceController(context,
-                    slotSimStatus.getPreferenceKey(slotIndex));
-            slotRecord.init(fragment, slotSimStatus);
-            controllers.add(slotRecord);
-
-            if (fragment != null) {
-                imeiInfoList.accept(ImeiInfoPreferenceController.DEFAULT_KEY + (1 + slotIndex));
-            }
-        }
-
-        EidStatus eidStatus = new EidStatus(slotSimStatus, context, executor);
-        SimEidPreferenceController simEid = new SimEidPreferenceController(context, KEY_EID_INFO);
-        simEid.init(slotSimStatus, eidStatus);
-        controllers.add(simEid);
-
-        if (executor != null) {
-            executor.shutdown();
-        }
         return controllers;
     }
 
@@ -205,7 +159,7 @@ public class MyDeviceInfoFragment extends DashboardFragment
         if (actionBar == null) {
             return;
         }
-    ActionBarShadowController.attachToView(getActivity(), getSettingsLifecycle(), getListView());
+        ActionBarShadowController.attachToView(getActivity(), getSettingsLifecycle(), getListView());
     }
 
     @Override

@@ -18,19 +18,27 @@ package com.android.settings.deviceinfo.hardwareinfo;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
 
-import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.settingslib.core.AbstractPreferenceController;
+import com.android.settingslib.core.lifecycle.Lifecycle;
 
 import com.android.settings.deviceinfo.BluetoothAddressPreferenceController;
+import com.android.settings.deviceinfo.BrandedAccountPreferenceController;
 import com.android.settings.deviceinfo.FccEquipmentIdPreferenceController;
 import com.android.settings.deviceinfo.FeedbackPreferenceController;
 import com.android.settings.deviceinfo.IpAddressPreferenceController;
 import com.android.settings.deviceinfo.WifiMacAddressPreferenceController;
 import com.android.settings.deviceinfo.ManualPreferenceController;
+import com.android.settings.deviceinfo.PhoneNumberPreferenceController;
 import com.android.settings.deviceinfo.RegulatoryInfoPreferenceController;
 import com.android.settings.deviceinfo.SafetyInfoPreferenceController;
-import com.android.settings.deviceinfo.WifiMacAddressPreferenceController;
+import com.android.settings.deviceinfo.imei.ImeiInfoPreferenceController;
+import com.android.settings.deviceinfo.simstatus.EidStatus;
+import com.android.settings.deviceinfo.simstatus.SimEidPreferenceController;
+import com.android.settings.deviceinfo.simstatus.SimStatusPreferenceController;
+import com.android.settings.deviceinfo.simstatus.SlotSimStatus;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -39,11 +47,16 @@ import com.android.settingslib.search.SearchIndexable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 @SearchIndexable
 public class HardwareInfoFragment extends DashboardFragment {
 
     public static final String TAG = "HardwareInfo";
+    private static final String KEY_EID_INFO = "eid_info";
+    private SimEidPreferenceController mSimEidController;
 
     @Override
     public int getMetricsCategory() {
@@ -60,9 +73,18 @@ public class HardwareInfoFragment extends DashboardFragment {
         return buildPreferenceControllers(context, this /* fragment */, getSettingsLifecycle());
     }
 
+    @Override
+    public void onViewCreated(android.view.View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (mSimEidController != null) {
+            mSimEidController.onViewCreated(getViewLifecycleOwner());
+        }
+    }
+
     private static List<AbstractPreferenceController> buildPreferenceControllers(
             Context context, HardwareInfoFragment fragment, Lifecycle lifecycle) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
+        
         controllers.add(new IpAddressPreferenceController(context, lifecycle));
         controllers.add(new WifiMacAddressPreferenceController(context, lifecycle));
         controllers.add(new BluetoothAddressPreferenceController(context, lifecycle));
@@ -71,6 +93,58 @@ public class HardwareInfoFragment extends DashboardFragment {
         controllers.add(new ManualPreferenceController(context));
         controllers.add(new FeedbackPreferenceController(fragment, context));
         controllers.add(new FccEquipmentIdPreferenceController(context));
+
+        controllers.add(new BrandedAccountPreferenceController(context, "branded_account"));
+
+        final ExecutorService executor = (fragment == null) ? null :
+                Executors.newSingleThreadExecutor();
+        final SlotSimStatus slotSimStatus = new SlotSimStatus(context, executor, null);
+
+        controllers.add(new PhoneNumberPreferenceController(context, "phone_number"));
+
+        SimStatusPreferenceController simStatusController =
+                new SimStatusPreferenceController(context, "sim_status");
+        simStatusController.init(fragment, slotSimStatus);
+        controllers.add(simStatusController);
+
+        for (int slotIndex = 0; slotIndex < slotSimStatus.size(); slotIndex++) {
+            SimStatusPreferenceController slotRecord =
+                    new SimStatusPreferenceController(context,
+                    slotSimStatus.getPreferenceKey(slotIndex));
+            slotRecord.init(fragment, slotSimStatus);
+            controllers.add(slotRecord);
+        }
+
+        Consumer<String> imeiInfoList = imeiKey -> {
+            ImeiInfoPreferenceController imeiRecord =
+                    new ImeiInfoPreferenceController(context, imeiKey);
+            imeiRecord.init(fragment, slotSimStatus);
+            controllers.add(imeiRecord);
+        };
+
+        if (fragment != null) {
+            imeiInfoList.accept(ImeiInfoPreferenceController.DEFAULT_KEY);
+        }
+
+        for (int slotIndex = 0; slotIndex < slotSimStatus.size(); slotIndex++) {
+            if (fragment != null) {
+                imeiInfoList.accept(ImeiInfoPreferenceController.DEFAULT_KEY + (1 + slotIndex));
+            }
+        }
+
+        EidStatus eidStatus = new EidStatus(slotSimStatus, context, executor);
+        SimEidPreferenceController simEid = new SimEidPreferenceController(context, KEY_EID_INFO);
+        simEid.init(slotSimStatus, eidStatus);
+        controllers.add(simEid);
+        
+        if (fragment != null) {
+            fragment.mSimEidController = simEid;
+        }
+
+        if (executor != null) {
+            executor.shutdown();
+        }
+
         return controllers;
     }
 
@@ -85,6 +159,13 @@ public class HardwareInfoFragment extends DashboardFragment {
                 @Override
                 protected boolean isPageSearchEnabled(Context context) {
                     return context.getResources().getBoolean(R.bool.config_show_device_model);
+                }
+
+                @Override
+                public List<AbstractPreferenceController> createPreferenceControllers(
+                        Context context) {
+                    return buildPreferenceControllers(context, null /* fragment */,
+                            null /* lifecycle */);
                 }
             };
 }
