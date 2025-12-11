@@ -21,6 +21,10 @@
     android:key="top_level_settings">
 
     <com.android.settingslib.widget.UntitledPreferenceCategory
+        android:order="-150"
+        android:key="top_level_account_category"/>
+
+    <com.android.settingslib.widget.UntitledPreferenceCategory
         android:order="-140"
         android:key="top_level_account_category"
         android:layout="@layout/settingslib_expressive_untitled_preference_category"/>
