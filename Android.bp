@@ -144,6 +144,9 @@ android_library {
         // Lineage dependencies
         "org.lineageos.platform.internal",
         "LineagePreferenceLib",
+
+        // Axion dependencies
+        "ax_compose",
     ],
 
     plugins: [
