@@ -35,6 +35,12 @@
             android:fragment="com.android.settings.notification.LockScreenNotificationsPreferencePageFragment"
             settings:controller="com.android.settings.notification.LockScreenNotificationsPreferencePageController" />
 
+        <Preference
+            android:key="security_lock_screen_widgets_page"
+            android:title="@string/widgets_on_lockscreen_title"
+            android:fragment="com.android.settings.communal.WidgetsOnLockscreenFragment"
+            settings:controller="com.android.settings.display.WidgetsOnLockscreenPreferenceController" />
+
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="security_display_lockscreen_bypass"
             android:title="@string/lockscreen_bypass_title"
