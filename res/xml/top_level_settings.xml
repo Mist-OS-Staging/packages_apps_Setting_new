@@ -30,6 +30,16 @@
         android:order="-130"
         android:key="top_level_connectivity_category"
         android:layout="@layout/settingslib_expressive_untitled_preference_category">
+
+        <com.android.settings.widget.HomepagePreference
+            android:fragment="org.mist.settings.MistSettings"
+            android:icon="@drawable/ic_settings_mist"
+            android:key="top_level_mist"
+            android:order="-10"
+            android:title="@string/mist_dashboard_title"
+            android:summary="@string/mist_dashboard_summary"
+            settings:controller="org.mist.settings.TopLevelMistSettingsPreferenceController"/>
+
         <com.android.settings.widget.HomepagePreference
             android:fragment="com.android.settings.network.NetworkDashboardFragment"
             android:icon="@drawable/ic_settings_wireless_filled"
