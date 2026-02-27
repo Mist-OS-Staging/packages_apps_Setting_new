@@ -16,6 +16,12 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- About phone screen, Mist OS version -->
+    <string name="mist_version">MistOS version</string>
+    <string name="mist_version_default">Unknown</string>
+    <string name="keywords_mist_version">MistOS version, mist version</string>
+
     <!-- Refresh rate -->
     <string name="refresh_rate_settings_title">Display Refresh Rate</string>
     <string name="refresh_rate_dynamic">Dynamic</string>
