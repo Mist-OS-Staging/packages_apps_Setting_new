@@ -22,6 +22,9 @@
     <string name="mist_version_default">Unknown</string>
     <string name="keywords_mist_version">MistOS version, mist version</string>
 
+    <!-- MistOS  Maintainer -->
+    <string name="MistOS_maintainer">MistOS Maintainer</string>
+
     <!-- Refresh rate -->
     <string name="refresh_rate_settings_title">Display Refresh Rate</string>
     <string name="refresh_rate_dynamic">Dynamic</string>
