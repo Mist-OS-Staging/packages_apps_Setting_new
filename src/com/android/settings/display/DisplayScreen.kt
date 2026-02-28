@@ -51,7 +51,8 @@ open class DisplayScreen :
     override fun getIcon(context: Context) =
         when {
             isExpressiveTheme(context) -> R.drawable.ic_homepage_display
-            else -> R.drawable.ic_settings_display_filled
+            Flags.homepageRevamp() -> R.drawable.ic_settings_display_filled
+            else -> R.drawable.ic_settings_display_white
         }
 
     override val highlightMenuKey: Int

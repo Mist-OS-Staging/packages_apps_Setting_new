@@ -28,6 +28,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
+import com.android.settings.flags.Flags;
 import com.android.settingslib.widget.SettingsThemeHelper;
 import com.android.settingslib.widget.theme.R;
 
@@ -70,7 +71,9 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
     @Override
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        updateBackground(holder, position);
+        if (Flags.homepageRevamp()) {
+            updateBackground(holder, position);
+        }
     }
 
     protected @DrawableRes int getRoundCornerDrawableRes(int position, boolean isSelected) {
@@ -115,8 +118,10 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     private void updatePreferences() {
-        mRoundCornerMappingList = new ArrayList<>();
-        mappingPreferenceGroup(mRoundCornerMappingList, mPreferenceGroup);
+        if (Flags.homepageRevamp()) {
+            mRoundCornerMappingList = new ArrayList<>();
+            mappingPreferenceGroup(mRoundCornerMappingList, mPreferenceGroup);
+        }
     }
 
     private void mappingPreferenceGroup(List<Integer> visibleList, PreferenceGroup group) {
