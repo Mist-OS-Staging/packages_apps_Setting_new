@@ -47,7 +47,8 @@ open class SoundScreen : PreferenceScreenMixin, PreferenceIconProvider {
     override fun getIcon(context: Context) =
         when {
             isExpressiveTheme(context) -> R.drawable.ic_homepage_sound
-            else -> R.drawable.ic_volume_up_filled
+            Flags.homepageRevamp() -> R.drawable.ic_volume_up_filled
+            else -> R.drawable.ic_volume_up_24dp
         }
 
     override val highlightMenuKey: Int

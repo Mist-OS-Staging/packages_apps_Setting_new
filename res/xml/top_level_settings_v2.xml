@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (C) 2018 The Android Open Source Project
+  Copyright (C) 2024 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -30,16 +30,6 @@
         android:order="-130"
         android:key="top_level_connectivity_category"
         android:layout="@layout/settingslib_expressive_untitled_preference_category">
-
-        <com.android.settings.widget.HomepagePreference
-            android:fragment="org.mist.settings.MistSettings"
-            android:icon="@drawable/ic_settings_mist"
-            android:key="top_level_mist"
-            android:order="-10"
-            android:title="@string/mist_dashboard_title"
-            android:summary="@string/mist_dashboard_summary"
-            settings:controller="org.mist.settings.TopLevelMistSettingsPreferenceController"/>
-
         <com.android.settings.widget.HomepagePreference
             android:fragment="com.android.settings.network.NetworkDashboardFragment"
             android:icon="@drawable/ic_settings_wireless_filled"
@@ -235,6 +225,7 @@
             android:summary="@string/supervision_settings_summary"
             android:icon="@drawable/ic_account_child_invert"
             android:order="5"
+            android:fragment="com.android.settings.supervision.SupervisionDashboardFragment"
             settings:highlightableMenuKey="@string/menu_key_supervision"
             settings:controller="com.android.settings.supervision.TopLevelSupervisionPreferenceController"/>
 
@@ -275,4 +266,3 @@
     </PreferenceCategory>
 
 </PreferenceScreen>
-

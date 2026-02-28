@@ -48,8 +48,10 @@ public class HomepagePreferenceLayoutHelper {
 
     public HomepagePreferenceLayoutHelper(Preference preference) {
         preference.setLayoutResource(
-                SettingsThemeHelper.isExpressiveTheme(preference.getContext())
-                        ? R.layout.homepage_preference_expressive
+                Flags.homepageRevamp()
+                        ? SettingsThemeHelper.isExpressiveTheme(preference.getContext())
+                                ? R.layout.homepage_preference_expressive
+                                : R.layout.homepage_preference_v2
                         : R.layout.homepage_preference);
     }
 
