@@ -21,6 +21,13 @@
     android:key="my_device_info_pref_screen"
     android:title="@string/about_settings">
 
+    <!-- Mist logo -->
+    <com.android.settingslib.widget.LayoutPreference
+        android:layout="@layout/mist_logo"
+        android:key="mist_logo"
+        android:order="-999"
+        android:selectable="false" />
+
     <PreferenceCategory
         android:key="firmware_category"
         android:selectable="false"
@@ -29,19 +36,11 @@
     <!-- Android version -->
         <Preference
             android:key="firmware_version"
-            android:order="1"
+            android:order="-998"
             android:title="@string/firmware_version"
             android:summary="@string/summary_placeholder"
             android:fragment="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionSettings"
             settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionPreferenceController"/>
-
-    <!-- Device name -->
-        <com.android.settings.widget.ValidatedEditTextPreference
-            android:key="device_name"
-            android:title="@string/my_device_info_device_name_preference_title"
-            android:summary="@string/summary_placeholder"
-            settings:controller="com.android.settings.deviceinfo.DeviceNamePreferenceController"
-            settings:enableCopying="true"/>
 
      </PreferenceCategory>
 
@@ -49,6 +48,16 @@
         android:key="basic_info_category"
         android:selectable="false"
         android:title="@string/my_device_info_basic_info_category_title">
+
+        <!-- Device name -->
+        <com.android.settings.widget.ValidatedEditTextPreference
+            android:key="device_name"
+            android:order="1"
+            android:title="@string/my_device_info_device_name_preference_title"
+            android:summary="@string/summary_placeholder"
+            settings:controller="com.android.settings.deviceinfo.DeviceNamePreferenceController"
+            settings:enableCopying="true"/>
+
 
         <!-- Account name -->
         <Preference
