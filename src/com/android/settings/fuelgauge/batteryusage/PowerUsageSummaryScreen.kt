@@ -66,7 +66,8 @@ open class PowerUsageSummaryScreen :
     override fun getIcon(context: Context) =
         when {
             isExpressiveTheme(context) -> R.drawable.ic_homepage_battery
-            else -> R.drawable.ic_settings_battery_filled
+            Flags.homepageRevamp() -> R.drawable.ic_settings_battery_filled
+            else -> R.drawable.ic_settings_battery_white
         }
 
     override fun getPreferenceHierarchy(context: Context, coroutineScope: CoroutineScope) =

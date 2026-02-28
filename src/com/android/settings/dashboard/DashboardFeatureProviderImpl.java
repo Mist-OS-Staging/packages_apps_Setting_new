@@ -48,8 +48,6 @@ import android.graphics.drawable.Icon;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -507,7 +505,10 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
                 }
 
                 final String iconPackage = (iconInfo != null) ? iconInfo.first : null;
-                setPreferenceIcon(preference, tile, forceRoundedIcon, iconPackage, icon);
+
+                ThreadUtils.postOnMainThread(() -> {
+                    setPreferenceIcon(preference, tile, forceRoundedIcon, iconPackage, icon);
+                });
             });
             return;
         }
@@ -523,14 +524,15 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
 
     private void setPreferenceIcon(Preference preference, Tile tile, boolean forceRoundedIcon,
             @Nullable String iconPackage, Icon icon) {
-        icon.loadDrawableAsync(preference.getContext(), iconDrawable -> {
-            if (iconDrawable == null) {
-                Log.w(TAG, "Set null preference icon for: " + iconPackage);
-                preference.setIcon(null);
-                return;
-            }
-            // Handle homepage icons
-            if (TextUtils.equals(tile.getCategory(), CategoryKey.CATEGORY_HOMEPAGE)) {
+        Drawable iconDrawable = icon.loadDrawable(preference.getContext());
+        if (iconDrawable == null) {
+            Log.w(TAG, "Set null preference icon for: " + iconPackage);
+            preference.setIcon(null);
+            return;
+        }
+        // Handle homepage icons
+        if (TextUtils.equals(tile.getCategory(), CategoryKey.CATEGORY_HOMEPAGE)) {
+            if (Flags.homepageRevamp()) {
                 if (SettingsThemeHelper.isExpressiveTheme(mContext)) {
                     preference.setIcon(getExpressiveHomepageIcon(tile, iconDrawable, iconPackage));
                     return;
@@ -541,16 +543,16 @@ public class DashboardFeatureProviderImpl implements DashboardFeatureProvider {
                     preference.setIcon(iconDrawable);
                     return;
                 }
-                iconDrawable.setTint(Utils.getHomepageIconColor(preference.getContext()));
             }
+            iconDrawable.setTint(Utils.getHomepageIconColor(preference.getContext()));
+        }
 
-            if (forceRoundedIcon && !TextUtils.equals(mContext.getPackageName(), iconPackage)) {
-                iconDrawable = new AdaptiveIcon(mContext, iconDrawable,
-                        R.dimen.dashboard_tile_foreground_image_inset);
-                ((AdaptiveIcon) iconDrawable).setBackgroundColor(mContext, tile);
-            }
-            preference.setIcon(iconDrawable);
-        }, new Handler(Looper.getMainLooper()));
+        if (forceRoundedIcon && !TextUtils.equals(mContext.getPackageName(), iconPackage)) {
+            iconDrawable = new AdaptiveIcon(mContext, iconDrawable,
+                    R.dimen.dashboard_tile_foreground_image_inset);
+            ((AdaptiveIcon) iconDrawable).setBackgroundColor(mContext, tile);
+        }
+        preference.setIcon(iconDrawable);
     }
 
     private Drawable getExpressiveHomepageIcon(Tile tile, Drawable iconDrawable,
