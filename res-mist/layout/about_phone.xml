@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="38dp"
-                android:textColor="?android:attr/colorAccent"
+                android:textColor="@color/device_name_header"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="8dp"/>
 
