@@ -95,6 +95,7 @@ import org.mist.settings.fragments.quicksettings.*;
 import org.mist.settings.fragments.statusbar.*;
 import org.mist.settings.fragments.themes.*;
 import org.mist.settings.fragments.extras.*;
+//import org.mist.settings.fragments.about.*;
 import org.mist.settings.fragments.themes.fonts.*;
 import com.airbnb.lottie.LottieAnimationView;
 
