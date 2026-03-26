@@ -25,4 +25,8 @@
     <color name="dashboard_card_header">@*android:color/system_neutral2_900</color>
     <color name="device_name_header">#E6FFFFFF</color>
     <color name="user_crd_bg">#424242</color>
+    <color name="crd_bg">#424242</color>
+    <color name="off_black">#E8E6E6</color>
+    <color name="pureBlack">#FFFFFF</color>
+    <color name="black">#FFFFFF</color>
 </resources>
