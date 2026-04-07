@@ -39,7 +39,7 @@ public class AnimateWallpaperView extends ImageView {
     private ValueAnimator animator;
     private long animationDuration = 60000L;
     private float zoomFactor = 1.5f;
-    private float dimAlpha = 0.2f;
+    private float dimAlpha = 0.35f;
 
     public AnimateWallpaperView(Context context) {
         super(context);
