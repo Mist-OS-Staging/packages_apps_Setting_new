@@ -657,6 +657,19 @@ public class Settings extends SettingsActivity {
 
     public static class MistSettingsActivity extends SettingsActivity {}
 
+    public static class MistColorsSettingsFragmentActivity extends SettingsActivity {}
+    public static class MistThemesActivity extends SettingsActivity {}
+    public static class MistQuickSettingsActivity extends SettingsActivity {}
+    public static class MistStatusBarActivity extends SettingsActivity {}
+    public static class MistNotificationsActivity extends SettingsActivity {}
+    public static class MistLockScreenActivity extends SettingsActivity {}
+    public static class MistButtonsActivity extends SettingsActivity {}
+    public static class MistSoundActivity extends SettingsActivity {}
+    public static class MistExtrasActivity extends SettingsActivity {}
+    public static class MistMiscellaneousActivity extends SettingsActivity {}
+    public static class MistSpoofingActivity extends SettingsActivity {}
+    public static class MistAboutActivity extends SettingsActivity {}
+
     public static class DevRunningServicesActivity extends SettingsActivity { /* empty */ }
 
     public static class SmartPixelsActivity extends SettingsActivity {}
