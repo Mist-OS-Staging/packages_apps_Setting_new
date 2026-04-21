@@ -227,6 +227,20 @@ import com.android.settings.wifi.savedaccesspoints2.SavedAccessPointsWifiSetting
 import com.android.settings.wifi.tether.WifiTetherSettings;
 
 import org.mist.settings.MistSettings;
+
+import org.mist.settings.fragments.themes.ColorsSettingsFragment;
+import org.mist.settings.fragments.themes.Themes;
+import org.mist.settings.fragments.quicksettings.QuickSettings;
+import org.mist.settings.fragments.statusbar.StatusBar;
+import org.mist.settings.fragments.notifications.Notifications;
+import org.mist.settings.fragments.lockscreen.LockScreen;
+import org.mist.settings.fragments.buttons.Buttons;
+import org.mist.settings.fragments.sound.Sound;
+import org.mist.settings.fragments.extras.Extras;
+import org.mist.settings.fragments.miscellaneous.Miscellaneous;
+import org.mist.settings.fragments.miscellaneous.Spoofing;
+import org.mist.settings.fragments.about.About;
+
 import org.mist.settings.fragments.themes.SmartPixels;
 
 public class SettingsGateway {
@@ -441,6 +455,18 @@ public class SettingsGateway {
             SummarizationPreferenceFragment.class.getName(),
             SafetyCenterFragment.class.getName(),
             MistSettings.class.getName(),
+            ColorsSettingsFragment.class.getName(),
+            Themes.class.getName(),
+            QuickSettings.class.getName(),
+            StatusBar.class.getName(),
+            Notifications.class.getName(),
+            LockScreen.class.getName(),
+            Buttons.class.getName(),
+            Sound.class.getName(),
+            Extras.class.getName(),
+            Miscellaneous.class.getName(),
+            Spoofing.class.getName(),
+            About.class.getName(),
             RunningServices.class.getName(),
             SmartPixels.class.getName(),
             PrivateDnsSettings.class.getName(),
@@ -494,6 +520,18 @@ public class SettingsGateway {
             Settings.NavigationModeSettingsActivity.class.getName(),
             Settings.ShadeSettingsActivity.class.getName(),
             Settings.MistSettingsActivity.class.getName(),
+            Settings.MistColorsSettingsFragmentActivity.class.getName(),
+            Settings.MistThemesActivity.class.getName(),
+            Settings.MistQuickSettingsActivity.class.getName(),
+            Settings.MistStatusBarActivity.class.getName(),
+            Settings.MistNotificationsActivity.class.getName(),
+            Settings.MistLockScreenActivity.class.getName(),
+            Settings.MistButtonsActivity.class.getName(),
+            Settings.MistSoundActivity.class.getName(),
+            Settings.MistExtrasActivity.class.getName(),
+            Settings.MistMiscellaneousActivity.class.getName(),
+            Settings.MistSpoofingActivity.class.getName(),
+            Settings.MistAboutActivity.class.getName(),
             Settings.DevRunningServicesActivity.class.getName(),
             Settings.SmartPixelsActivity.class.getName(),
             Settings.PrivateDnsSettingsActivity.class.getName(),

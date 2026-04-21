@@ -6245,6 +6245,114 @@
                        android:value="true" />
         </activity>
 
+        <!-- Monet Settings -->
+        <activity android:name="Settings$MistColorsSettingsFragmentActivity"
+                  android:label="@string/monet_settings_title"
+                  android:icon="@drawable/ic_homepage_monet"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.themes.ColorsSettingsFragment" />
+        </activity>
+
+        <!-- Themes Settings -->
+        <activity android:name="Settings$MistThemesActivity"
+                  android:label="@string/themes_summary"
+                  android:icon="@drawable/ic_mist_themes"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.themes.Themes" />
+        </activity>
+
+        <!-- Quick Settings -->
+        <activity android:name="Settings$MistQuickSettingsActivity"
+                  android:label="@string/quick_settings_title"
+                  android:icon="@drawable/ic_mist_quick_settings"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.quicksettings.QuickSettings" />
+        </activity>
+
+        <!-- Status Bar -->
+        <activity android:name="Settings$MistStatusBarActivity"
+                  android:label="@string/status_bar_title"
+                  android:icon="@drawable/ic_mist_status_bar"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.statusbar.StatusBar" />
+        </activity>
+
+        <!-- Notifications -->
+        <activity android:name="Settings$MistNotificationsActivity"
+                  android:label="@string/notifications_title"
+                  android:icon="@drawable/ic_homepage_notification"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.notifications.Notifications" />
+        </activity>
+
+        <!-- LockScreen Settings -->
+        <activity android:name="Settings$MistLockScreenActivity"
+                  android:label="@string/lock_screen_title_mist"
+                  android:icon="@drawable/ic_mist_lock_screen"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.lockscreen.LockScreen" />
+        </activity>
+
+        <!-- Button Settings -->
+        <activity android:name="Settings$MistButtonsActivity"
+                  android:label="@string/buttons_title"
+                  android:icon="@drawable/ic_mist_power_menu"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.buttons.Buttons" />
+        </activity>
+
+        <!-- Sound Settings -->
+        <activity android:name="Settings$MistSoundActivity"
+                  android:label="@string/sound_title"
+                  android:icon="@drawable/ic_homepage_sound"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.sound.Sound" />
+        </activity>
+
+        <!-- Extras Settings -->
+        <activity android:name="Settings$MistExtrasActivity"
+                  android:label="@string/extras_title"
+                  android:icon="@drawable/ic_homepage_extras"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.extras.Extras" />
+        </activity>
+
+        <!-- Misc Settings -->
+        <activity android:name="Settings$MistMiscellaneousActivity"
+                  android:label="@string/miscellaneous_title"
+                  android:icon="@drawable/ic_mist_miscellaneous"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.miscellaneous.Miscellaneous" />
+        </activity>
+
+        <!-- Spoofing Settings -->
+        <activity android:name="Settings$MistSpoofingActivity"
+                  android:label="@string/spoofing_title"
+                  android:icon="@drawable/ic_homepage_spoof"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.miscellaneous.Spoofing" />
+        </activity>
+
+        <!-- About Settings -->
+        <activity android:name="Settings$MistAboutActivity"
+                  android:label="@string/about_title"
+                  android:icon="@drawable/ic_homepage_about"
+                  android:exported="true">
+        <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                  android:value="org.mist.settings.fragments.about.About" />
+        </activity>
+
         <!-- App lock -->
         <activity android:name=".security.applock.AppLockCredentialActivity"
             android:exported="false"
