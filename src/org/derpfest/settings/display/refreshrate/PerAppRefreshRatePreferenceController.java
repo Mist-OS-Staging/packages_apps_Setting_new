@@ -14,7 +14,7 @@ import android.provider.Settings;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import com.android.internal.util.lunaris.DisplayRefreshRateHelper;
+import com.android.internal.util.mist.DisplayRefreshRateHelper;
 
 import com.android.settings.core.BasePreferenceController;
 

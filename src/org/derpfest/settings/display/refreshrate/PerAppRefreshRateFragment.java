@@ -7,7 +7,7 @@ package org.derpfest.settings.display.refreshrate;
 
 import android.os.Bundle;
 
-import com.android.internal.util.lunaris.DisplayRefreshRateHelper;
+import com.android.internal.util.mist.DisplayRefreshRateHelper;
 
 import com.android.settings.R;
 
