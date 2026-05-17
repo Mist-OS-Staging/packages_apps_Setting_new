@@ -85,7 +85,7 @@ class BlurSettings : Fragment() {
 
     companion object {
         const val DEFAULT_BLUR_RADIUS = 34f
-        const val MAX_BLUR_RADIUS = 70f
+        const val MAX_BLUR_RADIUS = 150f
     }
 
     override fun onCreateView(

@@ -28,7 +28,7 @@ class BlurSettingsPreferenceController(
 ) : BasePreferenceController(context, preferenceKey) {
 
     companion object {
-        const val MAX_BLUR_RADIUS = 70f
+        const val MAX_BLUR_RADIUS = 150f
     }
 
     override fun getAvailabilityStatus(): Int {
