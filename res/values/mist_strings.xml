@@ -6,6 +6,11 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- About phone screen, Mist OS version -->
+    <string name="mist_version">MistOS version</string>
+    <string name="mist_version_default">Unknown</string>
+    <string name="keywords_mist_version">MistOS version, mist version</string>
+
     <!-- Hardware info -->
     <string name="device_name">Device | Model</string>
     <string name="device_market_name">Market Name</string>
