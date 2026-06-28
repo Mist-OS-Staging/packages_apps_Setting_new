@@ -6339,8 +6339,6 @@
             </intent-filter>
         </service>
 
-        <!-- This is the longest AndroidManifest.xml ever. -->
-
         <!-- The Mistify -->
         <activity android:name="Settings$MistSettingsActivity"
                 android:label="@string/mist_dashboard_title"
@@ -6361,6 +6359,46 @@
             <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
                        android:value="true" />
         </activity>
+
+        <!-- This is the longest AndroidManifest.xml ever. -->
+
+        <!-- Locale Picker -->
+        <activity
+            android:name="com.google.android.settings.localepicker.SetupSystemLocalePickerActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask">
+            <intent-filter android:priority="1">
+                <action android:name="com.google.android.settings.localepicker.LOCALE_REGION_PICKER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.android.settings.localepicker.SetupRegionAndNumberingSystemActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.settings.localepicker.REGIONAND_PICKER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.android.settings.localepicker.SetupRegionSearchActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.settings.localepicker.SETUP_REGION_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.google.android.settings.localepicker.LocalePickerSetupWizardEventsReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.setupwizard.SETUP_WIZARD_FINISHED"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>
