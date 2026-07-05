@@ -27,6 +27,13 @@
         android:selectable="false"
         settings:isPreferenceVisible="false"/>
 
+    <!-- Mist logo -->
+    <com.android.settingslib.widget.LayoutPreference
+        android:layout="@layout/mist_logo"
+        android:key="mist_logo"
+        android:order="-999"
+        android:selectable="false" />
+
     <PreferenceCategory
         android:key="basic_info_category"
         android:selectable="false"
