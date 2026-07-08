@@ -1,0 +1,2 @@
+# Mistify
+-keep class org.mist.settings.**

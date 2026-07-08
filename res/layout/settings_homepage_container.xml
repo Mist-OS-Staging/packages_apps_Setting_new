@@ -17,103 +17,126 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settings_homepage_container"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/main_content_scrollable_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.android.settings.widget.HomepageAppBarScrollingViewBehavior">
-
-        <LinearLayout
-            android:id="@+id/homepage_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/suggestion_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
-                android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd" />
-
-            <FrameLayout
-                android:id="@+id/contextual_cards_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/contextual_card_side_margin"
-                android:layout_marginEnd="@dimen/contextual_card_side_margin"/>
-
-            <FrameLayout
-                android:id="@+id/main_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"/>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:touchscreenBlocksFocus="false"
-        android:keyboardNavigationCluster="false">
-        <LinearLayout
-            android:id="@+id/app_bar_container"
+        android:background="@android:color/transparent"
+        android:outlineProvider="none"
+        android:stateListAnimator="@null"
+        app:elevation="10dp">
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/search_bar_container_top_padding"
-            android:paddingBottom="@dimen/settingslib_expressive_space_extrasmall4"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:background="?android:attr/colorBackground">
-
-            <TextView
-                android:id="@+id/homepage_title"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="start"
-                android:textSize="32sp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:fontFamily="@*android:string/config_headlineFontFamily"
-                android:text="@string/settings_label"
-                android:paddingBottom="16dp"
-                />
+            android:layout_margin="8dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
+                android:id="@+id/app_bar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingEnd="10dp">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/search_bar_container_top_padding"
+                android:paddingBottom="16dp"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:background="?android:attr/colorBackground">
 
-                <FrameLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/homepage_title"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <include layout="@layout/search_bar"/>
-                </FrameLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="start"
+                    android:textSize="32sp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:fontFamily="@*android:string/config_headlineFontFamily"
+                    android:text="@string/settings_label"
+                    android:paddingBottom="16dp" />
 
-                <ImageView
-                    android:id="@+id/btnMistVersion"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
-                    android:padding="5dp"
-                    android:src="@drawable/logo_single"
-                    android:tint="@*android:color/accent_device_default"
-                    android:foreground="@drawable/button_ripple_radius"
-                    android:background="@drawable/mist_button_bg"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="10dp">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <include layout="@layout/search_bar"/>
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/btnMistVersion"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="5dp"
+                        android:src="@drawable/logo_single"
+                        android:tint="@*android:color/accent_device_default"
+                        android:foreground="@drawable/button_ripple_radius"
+                        android:background="@drawable/mist_button_bg"/>
+                </LinearLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/transparent"
+                    android:theme="@style/Theme.MaterialComponents.DayNight"
+                    app:tabMaxWidth="0dp"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
+                    app:tabIndicatorGravity="stretch"
+                    app:tabIndicatorColor="?androidprv:attr/colorAccentPrimaryVariant"
+                    app:tabIndicator="@drawable/tabs_indicator_background"
+                    app:tabSelectedTextColor="@android:color/white"
+                    app:tabIconTint="@android:color/white"
+                    app:tabTextColor="?android:attr/textColorSecondary"
+                    app:tabTextAppearance="@style/TextAppearance.Tab.NoCaps"
+                    app:tabInlineLabel="true" />
+
             </LinearLayout>
-
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/suggestion_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
+            android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd" />
+
+        <FrameLayout
+            android:id="@+id/contextual_cards_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/contextual_card_side_margin"
+            android:layout_marginEnd="@dimen/contextual_card_side_margin"/>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

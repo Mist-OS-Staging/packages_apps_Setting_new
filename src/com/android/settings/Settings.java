@@ -489,6 +489,8 @@ public class Settings extends SettingsActivity {
     /** App specific version of {@link AlarmsAndRemindersActivity} */
     public static class AlarmsAndRemindersAppActivity extends SettingsActivity {/* empty */ }
 
+    public static class MistSettingsActivity extends SettingsActivity { /* empty */ }
+
     public static class ApnEditorActivity extends SettingsActivity { /* empty */ }
     public static class ChooseAccountActivity extends SettingsActivity { /* empty */ }
     public static class IccLockSettingsActivity extends SettingsActivity { /* empty */ }
