@@ -78,6 +78,14 @@ import androidx.window.embedding.SplitInfo;
 import androidx.window.embedding.SplitRule;
 import androidx.window.java.embedding.SplitControllerCallbackAdapter;
 
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.FragmentPagerAdapter;
+import org.mist.settings.MistSettings;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import java.util.ArrayList;
+
 import com.airbnb.lottie.LottieAnimationView;
 
 import com.android.settings.PccAwareUidComparator;
@@ -133,6 +141,8 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     private Set<HomepageLoadedListener> mLoadedListeners;
     private boolean mIsEmbeddingActivityEnabled;
     private boolean mIsTwoPane;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
     // A regular layout shows icons on homepage, whereas a simplified layout doesn't.
     private boolean mIsRegularLayout = true;
 
@@ -304,12 +314,6 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                         .getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
             }
         }
-        mMainFragment = showFragment(() -> {
-            final TopLevelSettings fragment = new TopLevelSettings();
-            fragment.getArguments().putString(SettingsActivity.EXTRA_FRAGMENT_ARG_KEY,
-                    highlightMenuKey);
-            return fragment;
-        }, R.id.main_content);
 
         // Launch the intent of the embedded deep link
         if (isEmbeddedDeepLink) {
@@ -849,13 +853,17 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void initHomepageContainer() {
-        // Force scroll capture to select the NestedScrollView, instead of the non-scrollable
-        // RecyclerView which is contained inside it with no height constraint.
-        final View scrollableContainer = findViewById(R.id.main_content_scrollable_container);
-        if (scrollableContainer != null) {
-            scrollableContainer.setScrollCaptureHint(
-                    View.SCROLL_CAPTURE_HINT_EXCLUDE_DESCENDANTS);
+        mTabLayout = findViewById(R.id.tab_layout);
+        mViewPager = findViewById(R.id.viewPager);
+
+        if (mTabLayout != null && mViewPager != null) {
+            mTabLayout.setupWithViewPager(mViewPager);
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+            viewPagerAdapter.addFragment(new TopLevelSettings(), "Device Settings");
+            viewPagerAdapter.addFragment(new MistSettings(), "Mistify");
+            mViewPager.setAdapter(viewPagerAdapter);
         }
+
     }
 
     private static class SuggestionFragCreator implements FragmentCreator {
@@ -909,6 +917,38 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                 mIsSplitUpdatedUI = true;
                 mActivity.updateHomepageUI();
             }
+        }
+    }
+
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private final ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
+        private final ArrayList<String> fragmentTitle = new ArrayList<>();
+
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentArrayList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentArrayList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title){
+            fragmentArrayList.add(fragment);
+            fragmentTitle.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return fragmentTitle.get(position);
         }
     }
 }
