@@ -63,6 +63,7 @@ android_library {
     use_resource_processor: true,
     resource_dirs: [
         "res",
+        "res-mist",
         "res-export", // for external usage
         "res-product",
     ],
