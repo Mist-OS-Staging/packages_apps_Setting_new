@@ -46,13 +46,29 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+
 
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
 import androidx.core.util.Consumer;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import android.os.SystemProperties;
+import android.os.Build;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Button;
+import android.graphics.drawable.Drawable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import android.animation.Animator;
+import android.app.WallpaperManager;
+import android.content.res.ColorStateList;
+
+import com.airbnb.lottie.LottieAnimationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -61,6 +77,8 @@ import androidx.window.embedding.SplitController;
 import androidx.window.embedding.SplitInfo;
 import androidx.window.embedding.SplitRule;
 import androidx.window.java.embedding.SplitControllerCallbackAdapter;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import com.android.settings.PccAwareUidComparator;
 import com.android.settings.R;
@@ -121,6 +139,12 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     private SplitControllerCallbackAdapter mSplitControllerAdapter;
     private SplitInfoCallback mCallback;
     private boolean mAllowUpdateSuggestion = true;
+
+    LinearLayout linearLayout, topContent;
+    Button btnMistUpdater;
+    ImageView avatarView, btnMistVersion, wallpaperView, statusChip;
+    TextView mistVersion, mistMaintainer, mistDevice, mistBuildDate, mistBuildType, checkGapps;
+    LottieAnimationView welcomeAnimation;
 
     /** A listener receiving homepage loaded events. */
     public interface HomepageLoadedListener {
@@ -415,6 +439,110 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         FeatureFactory.getFeatureFactory().getSearchFeatureProvider()
                 .initSearchToolbar(this /* activity */, toolbar,
                         SettingsEnums.SETTINGS_HOMEPAGE);
+
+        btnMistVersion = findViewById(R.id.btnMistVersion);
+        if (btnMistVersion != null) {
+            btnMistVersion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBottomSheetDialog();
+                }
+            });
+        }
+    }
+
+    private void showBottomSheetDialog() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.MistBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(R.layout.mist_bottom_sheet);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        wallpaperView = bottomSheetDialog.findViewById(R.id.wallpaper_view);
+        if (wallpaperDrawable != null && wallpaperView != null) {
+            wallpaperView.setImageDrawable(wallpaperDrawable);
+            wallpaperView.setImageAlpha(140);
+        }
+
+        statusChip = bottomSheetDialog.findViewById(R.id.status_chip);
+        linearLayout = bottomSheetDialog.findViewById(R.id.frame_build_type);
+        topContent = bottomSheetDialog.findViewById(R.id.top_content_holder);
+
+        welcomeAnimation = bottomSheetDialog.findViewById(R.id.welcome_animation);
+        if (welcomeAnimation != null) playWelcomeAnim();
+
+        mistDevice = bottomSheetDialog.findViewById(R.id.mist_device);
+        mistVersion = bottomSheetDialog.findViewById(R.id.mist_version);
+        mistMaintainer = bottomSheetDialog.findViewById(R.id.mist_maintainer);
+        mistBuildDate = bottomSheetDialog.findViewById(R.id.mist_build_date);
+        mistBuildType = bottomSheetDialog.findViewById(R.id.mist_build_type);
+        checkGapps = bottomSheetDialog.findViewById(R.id.check_gapps);
+
+        String buildDate = SystemProperties.get("ro.build.date", "");
+        if (buildDate.length() >= 10) buildDate = buildDate.substring(0, 10);
+        
+        if (mistDevice != null) mistDevice.setText(SystemProperties.get("ro.mist.device", "") + "(" + SystemProperties.get("ro.product.model", "") + ")");
+        if (mistVersion != null) mistVersion.setText("MistOS_v"
+                + SystemProperties.get("ro.mist.version.base", "")
+                + "-"
+                + SystemProperties.get("ro.mist.codename", ""));
+        if (mistMaintainer != null) mistMaintainer.setText(SystemProperties.get("ro.mistos.maintainer", ""));
+        if (mistBuildDate != null) mistBuildDate.setText(buildDate);
+        String buildType = SystemProperties.get("ro.mist.buildtype", "");
+        if (mistBuildType != null) mistBuildType.setText(buildType);
+        if (checkGapps != null) checkGapps.setText(SystemProperties.get("ro.mist.packagetype", ""));
+
+        btnMistUpdater = bottomSheetDialog.findViewById(R.id.btn_updater);
+
+        if (statusChip != null && linearLayout != null) {
+            if ("OFFICIAL".equals(buildType)) {
+                if (btnMistUpdater != null) btnMistUpdater.setVisibility(View.VISIBLE);
+                statusChip.setBackgroundResource(R.drawable.icon_official);
+                linearLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.mist_official_color, null)));
+            } else {
+                statusChip.setBackgroundResource(R.drawable.icon_unofficial);
+                linearLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.mist_unofficial_color, null)));  
+            }
+        }
+
+        if (btnMistUpdater != null) {
+            btnMistUpdater.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent nIntent = new Intent(Intent.ACTION_MAIN);
+                    nIntent.setClassName("org.mist.updater",
+                            "org.mist.updater.UpdatesActivity");
+                    startActivity(nIntent);
+                }
+            });
+        }
+        bottomSheetDialog.show();
+    }
+
+    private void playWelcomeAnim() {
+        welcomeAnimation.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                if (linearLayout != null) linearLayout.setVisibility(View.INVISIBLE);
+                if (topContent != null) topContent.setVisibility(View.INVISIBLE);
+                if (welcomeAnimation != null) welcomeAnimation.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if (welcomeAnimation != null) welcomeAnimation.setVisibility(View.GONE);
+                if (linearLayout != null) linearLayout.setVisibility(View.VISIBLE);
+                if (topContent != null) topContent.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
     }
 
     private void updateHomepageUI() {
@@ -784,3 +912,4 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         }
     }
 }
+
