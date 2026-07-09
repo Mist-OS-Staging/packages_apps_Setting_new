@@ -99,10 +99,10 @@
                     app:tabGravity="fill"
                     app:tabMode="fixed"
                     app:tabIndicatorGravity="stretch"
-                    app:tabIndicatorColor="?androidprv:attr/colorAccentPrimaryVariant"
+                    app:tabIndicatorColor="@*android:color/system_accent1_600"
                     app:tabIndicator="@drawable/tabs_indicator_background"
                     app:tabSelectedTextColor="@android:color/white"
-                    app:tabIconTint="@android:color/white"
+                    app:tabIconTint="@*android:color/system_accent1_600"
                     app:tabTextColor="?android:attr/textColorSecondary"
                     app:tabTextAppearance="@style/TextAppearance.Tab.NoCaps"
                     app:tabInlineLabel="true" />
