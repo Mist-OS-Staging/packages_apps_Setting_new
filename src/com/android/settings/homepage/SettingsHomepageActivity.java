@@ -293,7 +293,48 @@ public class SettingsHomepageActivity extends FragmentActivity implements
 
         initHomepageContainer();
         updateHomepageBackground();
-        mLoadedListeners = new ArraySet<>();
+
+        if (savedInstanceState == null) {
+            TextView titleView = findViewById(R.id.homepage_title);
+            if (titleView != null) {
+                android.os.UserManager userManager = getSystemService(android.os.UserManager.class);
+                String userName = userManager != null ? userManager.getUserName() : null;
+                if (userName == null || userName.isEmpty()) {
+                    userName = "Owner";
+                } else if (userName.length() > 12) {
+                    userName = userName.substring(0, 10) + "...";
+                }
+                final String welcomeStr = "Welcome, ";
+                final String exclamation = "!!";
+                final String fullText = welcomeStr + userName + exclamation;
+                android.text.SpannableString spannableString = new android.text.SpannableString(fullText);
+                int accentColor = com.android.settingslib.Utils.getColorAttrDefaultColor(this, android.R.attr.colorAccent);
+                spannableString.setSpan(new android.text.style.ForegroundColorSpan(accentColor),
+                        welcomeStr.length(), welcomeStr.length() + userName.length(),
+                        android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                final String originalTitle = getString(R.string.settings_label);
+                titleView.setText(spannableString);
+                titleView.postDelayed(() -> {
+                    titleView.animate()
+                        .alpha(0f)
+                        .translationY(-50f)
+                        .setDuration(300)
+                        .withEndAction(() -> {
+                            titleView.setText(originalTitle);
+                            titleView.setTranslationY(50f);
+                            titleView.animate()
+                                .alpha(1f)
+                                .translationY(0f)
+                                .setDuration(400)
+                                .setInterpolator(new android.view.animation.OvershootInterpolator())
+                                .start();
+                        })
+                        .start();
+                }, 2000);
+            }
+        }
+
+        mLoadedListeners = new android.util.ArraySet<>();
 
         initSearchBarView();
 
