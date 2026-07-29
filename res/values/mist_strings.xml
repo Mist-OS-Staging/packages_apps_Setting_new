@@ -91,6 +91,9 @@
     <string name="search_region">Search regions</string>
     <string name="search_region_page">Search region page</string>
 
+    <!-- Auto pin confirm -->
+    <string name="lock_screen_auto_pin_confirm_summary_custom">Unlock automatically if you input a correct PIN. This is slightly less secure than tapping Enter to confirm.</string>
+
     <!-- Battery Saver -->
     <string name="adaptive_battery_entry_purpose">Allows users to enable or disable Adaptive Battery, which optimizes app battery usage based on phone usage patterns to extend battery life.</string>
     <string name="adaptive_battery_management_enabled_purpose">Whether Adaptive Battery is enabled to optimize battery usage based on app usage patterns.</string>
