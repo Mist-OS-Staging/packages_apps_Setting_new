@@ -1,348 +1,287 @@
 /*
- * Copyright (C) 2021 AOSP-Krypton Project
- *           (C) 2022 Nameless-AOSP Project
- *           (C) 2022 Paranoid Android
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * SPDX-FileCopyrightText: Evolution X
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package com.android.settings.security
 
-import android.annotation.SuppressLint
 import android.app.ActivityManager
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.UserInfo
-import android.graphics.drawable.Drawable
+import android.content.ContentResolver
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
-import android.os.UserManager
 import android.provider.Settings
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.SearchView
-import android.widget.TextView
-
-import androidx.core.view.ViewCompat
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-
 import com.android.settings.R
+import com.android.settingslib.spa.framework.theme.SettingsTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.evolution.settings.fragments.miscellaneous.AppListEntry
+import org.evolution.settings.fragments.miscellaneous.AppPickerItem
+import org.evolution.settings.fragments.miscellaneous.AppPickerSearchField
+import org.evolution.settings.fragments.miscellaneous.SpoofingEmptyState
+import org.evolution.settings.fragments.miscellaneous.SpoofingHeaderCard
+import org.evolution.settings.fragments.miscellaneous.SpoofingLoadingBox
+import org.evolution.settings.fragments.miscellaneous.filterInstalledApps
+import org.evolution.settings.fragments.miscellaneous.killPackages
+import org.evolution.settings.fragments.miscellaneous.targetedFirstComparator
 
-import com.google.android.material.appbar.AppBarLayout
+// ---------------------------------------------------------------------------
+// Settings helpers — current-user only. Single read-then-write per toggle,
+// no whole-set round-trip on every fragment recreation (that round-trip was
+// the source of the lost-write race in the old Java/RecyclerView version).
+// ---------------------------------------------------------------------------
 
-class HideDeveloperStatusSettings: Fragment(R.layout.hide_developer_status_layout) {
+private fun readHiddenSet(cr: ContentResolver): Set<String> {
+    val raw = Settings.Secure.getString(cr, Settings.Secure.HIDE_DEVELOPER_STATUS)
+    if (raw.isNullOrBlank()) return emptySet()
+    return raw.split(",").filter { it.isNotBlank() }.toSet()
+}
 
-    private lateinit var activityManager: ActivityManager
-    private lateinit var packageManager: PackageManager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: AppListAdapter
-    private lateinit var packageList: List<PackageInfo>
-    private lateinit var userManager: UserManager
-    private lateinit var userInfos: List<UserInfo>
+private fun writeHiddenSet(cr: ContentResolver, packages: Set<String>) {
+    Settings.Secure.putString(
+        cr,
+        Settings.Secure.HIDE_DEVELOPER_STATUS,
+        packages.joinToString(","),
+    )
+}
 
-    private var appBarLayout: AppBarLayout? = null
-    private var searchText = ""
-    private var customFilter: ((PackageInfo) -> Boolean)? = null
-    private var comparator: ((PackageInfo, PackageInfo) -> Int)? = null
-    private var showSystem = false
-    private var optionsMenu: Menu? = null
+// ---------------------------------------------------------------------------
+// Fragment
+// ---------------------------------------------------------------------------
 
-    enum class Action {
-        ADD,
-        REMOVE,
-        SET,
-    }
+class HideDeveloperStatusSettings : Fragment() {
 
-    @Synchronized
-    fun putAppsForUser(packageName: String, userId: Int, action: Action) {
-        if (userId < 0) {
-            return
-        }
-
-        val cr = requireContext().contentResolver
-
-        val apps =
-            Settings.Secure.getString(cr, getKey())
-                ?.split(",")
-                ?.toMutableSet() ?: mutableSetOf<String>()
-
-        when (action) {
-            Action.ADD -> apps.add(packageName)
-            Action.REMOVE -> apps.remove(packageName)
-            Action.SET -> {} // Don't change
-        }
-
-        Settings.Secure.putStringForUser(
-            cr,
-            getKey(),
-            apps.joinToString(separator = ","),
-            userId,
-        )
-    }
-
-    override fun onStart() {
-        super.onStart()
-        updateOptionsMenu()
-        val host = getActivity()
-        if (host != null) {
-            host.invalidateOptionsMenu();
-        }
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        requireActivity().setTitle(getTitle())
-        appBarLayout = requireActivity().findViewById(R.id.app_bar)
-        activityManager = requireContext().getSystemService(ActivityManager::class.java) as ActivityManager
-        packageManager = requireContext().packageManager
-        packageList = packageManager.getInstalledPackages(PackageManager.MATCH_ANY_USER)
-        userManager = UserManager.get(requireContext())
-        userInfos = userManager.getUsers()
-        for (info in userInfos) {
-            putAppsForUser("", info.id, Action.SET)
-        }
+        requireActivity().title = getString(R.string.hide_developer_status_title)
     }
 
-    private fun getTitle(): Int {
-        return R.string.hide_developer_status_title
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = AppListAdapter()
-        recyclerView = view.findViewById<RecyclerView>(R.id.apps_list).also {
-            it!!.layoutManager = LinearLayoutManager(context)
-            it!!.adapter = adapter
-        } as RecyclerView
-        refreshList()
-    }
-
-    /**
-     * @return an initial list of packages that should appear as selected.
-     */
-    private fun getInitialCheckedList(): List<String> {
-        val flattenedString = Settings.Secure.getString(
-            requireContext().contentResolver, getKey()
-        )
-        return flattenedString?.takeIf {
-            it.isNotBlank()
-        }?.split(",")?.toList() ?: emptyList()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val activity = getActivity()
-        if (activity == null) {
-            return;
-        }
-        optionsMenu = menu;
-        inflater.inflate(R.menu.hide_developer_status_menu, menu)
-
-        menu.findItem(R.id.show_system).setVisible(showSystem)
-        menu.findItem(R.id.hide_system).setVisible(!showSystem)
-
-        val searchMenuItem = menu.findItem(R.id.search) as MenuItem
-        searchMenuItem.setOnActionExpandListener(object: MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                // To prevent a large space on tool bar.
-                appBarLayout!!.setExpanded(false /*expanded*/, false /*animate*/)
-                // To prevent user can expand the collapsing tool bar view.
-                ViewCompat.setNestedScrollingEnabled(recyclerView, false)
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                // We keep the collapsed status after user cancel the search function.
-                appBarLayout!!.setExpanded(false /*expanded*/, false /*animate*/)
-                ViewCompat.setNestedScrollingEnabled(recyclerView, true)
-                return true
-            }
-        })
-        val searchView = searchMenuItem.actionView as SearchView
-        searchView.queryHint = getString(R.string.search_apps)
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String) = false
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                searchText = newText
-                refreshList()
-                return true
-            }
-        })
-
-        updateOptionsMenu()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var i = item.getItemId()
-        if (i == R.id.show_system || i == R.id.hide_system) {
-            showSystem = !showSystem;
-            refreshList();
-        }
-        updateOptionsMenu()
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        updateOptionsMenu()
-    }
-
-    override fun onDestroyOptionsMenu() {
-        optionsMenu = null;
-    }
-
-    private fun updateOptionsMenu() {
-        if (optionsMenu == null) {
-            return;
-        }
-
-        var menu = optionsMenu as Menu
-
-        menu.findItem(R.id.show_system).setVisible(!showSystem)
-        menu.findItem(R.id.hide_system).setVisible(showSystem)
-    }
-
-    /**
-     * Called when user selects an item.
-     *
-     * @param list a [List<String>] of selected items.
-     */
-    private fun onListUpdate(packageName: String, isChecked: Boolean) {
-        if (packageName.isBlank()) return
-        for (info in userInfos) {
-            if (isChecked) {
-                putAppsForUser(packageName, info.id, Action.ADD)
-            } else {
-                putAppsForUser(packageName, info.id, Action.REMOVE)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View = ComposeView(requireContext()).apply {
+        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        setContent {
+            SettingsTheme {
+                HideDeveloperStatusContent(context = requireContext())
             }
         }
-        try {
-            activityManager.forceStopPackage(packageName)
-        } catch (ignored: Exception) {
-        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Root composable
+// ---------------------------------------------------------------------------
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun HideDeveloperStatusContent(context: android.content.Context) {
+    val pm = context.packageManager
+    val activityManager = remember { context.getSystemService(ActivityManager::class.java) }
+    val scope = rememberCoroutineScope()
+
+    val hiddenPackages = remember {
+        context.resources.getStringArray(R.array.hide_developer_status_hidden_apps).toSet()
     }
 
-    private fun getKey(): String {
-        return Settings.Secure.HIDE_DEVELOPER_STATUS
-    }
+    var searchQuery by remember { mutableStateOf("") }
+    var showSystemApps by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
+    val allApps = remember { mutableStateListOf<AppListEntry>() }
 
-    private fun refreshList() {
-        var list = packageList.filter {
-            if (!showSystem) {
-                !it.applicationInfo!!.isSystemApp()
-                && !resources.getStringArray(
-                        R.array.hide_developer_status_hidden_apps)
-                            .asList().contains(it.applicationInfo!!.packageName)
-                && !it.applicationInfo!!.packageName.contains("android.settings")
-            } else {
-                !resources.getStringArray(
-                    R.array.hide_developer_status_hidden_apps)
-                        .asList().contains(it.applicationInfo!!.packageName)
-                && !it.applicationInfo!!.packageName.contains("android.settings")
-                && !it.applicationInfo!!.isResourceOverlay()
+    // -------------------------------------------------------------------
+    // Load (re-runs when showSystemApps changes) — mirrors SensorBlock /
+    // TensorTargets / PixelProps.
+    // -------------------------------------------------------------------
+
+    LaunchedEffect(showSystemApps) {
+        isLoading = true
+        withContext(Dispatchers.IO) {
+            val hidden = readHiddenSet(context.contentResolver)
+
+            val installed = filterInstalledApps(
+                pm = pm,
+                showSystem = showSystemApps,
+                targeted = hidden,
+                hidden = hiddenPackages,
+                extraFilter = { app ->
+                    !app.packageName.contains("android.settings")
+                },
+            )
+                .sortedWith(targetedFirstComparator(pm, hidden))
+                .map { app ->
+                    AppListEntry(
+                        packageName = app.packageName,
+                        label = pm.getApplicationLabel(app).toString(),
+                        icon = runCatching { pm.getApplicationIcon(app) }.getOrNull(),
+                        isSystem = app.flags and ApplicationInfo.FLAG_SYSTEM != 0,
+                        isSelected = app.packageName in hidden,
+                    )
+                }
+
+            // Prune stale package names (uninstalled apps) from the stored set.
+            val installedPkgs = installed.map { it.packageName }.toSet()
+            val pruned = hidden.filter { it in installedPkgs }.toSet()
+            if (pruned.size < hidden.size) writeHiddenSet(context.contentResolver, pruned)
+
+            withContext(Dispatchers.Main) {
+                allApps.clear()
+                allApps.addAll(installed)
+                isLoading = false
             }
-        }.filter {
-            getLabel(it).contains(searchText, true)
         }
-        list = customFilter?.let { customFilter ->
-            list.filter {
-                customFilter(it)
-            }
-        } ?: list
-        list = comparator?.let {
-            list.sortedWith(it)
-        } ?: list.sortedWith { a, b ->
-            getLabel(a).compareTo(getLabel(b))
-        }
-        if (::adapter.isInitialized) adapter.submitList(list.map { appInfoFromPackageInfo(it) })
     }
 
-    private fun appInfoFromPackageInfo(packageInfo: PackageInfo) =
-        AppInfo(
-            packageInfo.packageName,
-            getLabel(packageInfo),
-            packageInfo.applicationInfo!!.loadIcon(packageManager),
-        )
-    
-    private fun getLabel(packageInfo: PackageInfo) =
-        packageInfo.applicationInfo!!.loadLabel(packageManager).toString()
+    val filteredApps = remember(searchQuery, allApps.toList()) {
+        val q = searchQuery.lowercase()
+        allApps.filter { app ->
+            q.isEmpty() ||
+                app.label.lowercase().contains(q) ||
+                app.packageName.lowercase().contains(q)
+        }
+    }
 
-    private inner class AppListAdapter: ListAdapter<AppInfo, AppListViewHolder>(itemCallback) {
-        private val selectedIndices = mutableSetOf<Int>()
-        private var initialList = getInitialCheckedList().toMutableList()
+    val activeCount = allApps.count { it.isSelected }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            AppListViewHolder(layoutInflater.inflate(
-                R.layout.hide_developer_status_list_item, parent, false))
+    // -------------------------------------------------------------------
+    // UI
+    // -------------------------------------------------------------------
 
-        override fun onBindViewHolder(holder: AppListViewHolder, position: Int) {
-            getItem(position).let {
-                holder.label!!.text = it.label
-                holder.packageName!!.text = it.packageName
-                holder.icon!!.setImageDrawable(it.icon)
-                holder.itemView!!.setOnClickListener {
-                    if (selectedIndices.contains(position)) {
-                        selectedIndices.remove(position)
-                        onListUpdate(holder.packageName!!.text.toString(), false)
-                    } else {
-                        selectedIndices.add(position)
-                        onListUpdate(holder.packageName!!.text.toString(), true)
+    Scaffold(containerColor = Color.Transparent) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp),
+        ) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SpoofingHeaderCard(
+                title = stringResource(R.string.hide_developer_status_title),
+                subtitle = if (activeCount == 0)
+                    stringResource(R.string.ts_no_targets)
+                else
+                    stringResource(R.string.hide_developer_status_count, activeCount),
+            ) {
+                Icon(
+                    Icons.Default.BugReport,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            AppPickerSearchField(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            FilterChip(
+                selected = showSystemApps,
+                onClick = { showSystemApps = !showSystemApps },
+                label = { Text(stringResource(R.string.show_system_apps)) },
+                leadingIcon = if (showSystemApps) {
+                    {
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
                     }
-                    notifyItemChanged(position)
+                } else null,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (isLoading) {
+                SpoofingLoadingBox(modifier = Modifier.weight(1f))
+            } else if (filteredApps.isEmpty()) {
+                SpoofingEmptyState(
+                    icon = Icons.Default.BugReport,
+                    title = if (searchQuery.isBlank())
+                        stringResource(R.string.hide_developer_status_no_apps_available)
+                    else
+                        stringResource(R.string.hide_developer_status_no_apps_found, searchQuery),
+                    description = stringResource(R.string.hide_developer_status_summary),
+                    modifier = Modifier.weight(1f),
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    items(filteredApps, key = { it.packageName }) { app ->
+                        AppPickerItem(
+                            packageName = app.packageName,
+                            label = app.label,
+                            icon = app.icon,
+                            isSystem = app.isSystem,
+                            checked = app.isSelected,
+                            onToggle = { nowHidden ->
+                                val index = allApps.indexOfFirst {
+                                    it.packageName == app.packageName
+                                }
+                                if (index < 0) return@AppPickerItem
+                                allApps[index] = allApps[index].copy(isSelected = nowHidden)
+                                val snapshot = allApps.filter { it.isSelected }
+                                    .map { it.packageName }.toSet()
+                                scope.launch(Dispatchers.IO) {
+                                    writeHiddenSet(context.contentResolver, snapshot)
+                                    // Force-stop so the app re-reads ADB_ENABLED /
+                                    // DEVELOPMENT_SETTINGS_ENABLED on next launch.
+                                    killPackages(activityManager, setOf(app.packageName))
+                                }
+                            },
+                        )
+                    }
+                    item { Spacer(modifier = Modifier.height(80.dp)) }
                 }
-                if (initialList.contains(it.packageName)) {
-                    initialList.remove(it.packageName)
-                    selectedIndices.add(position)
-                }
-                holder.checkBox!!.isChecked = selectedIndices.contains(position)
             }
-        }
-
-        override fun submitList(list: List<AppInfo>?) {
-            initialList = getInitialCheckedList().toMutableList()
-            selectedIndices.clear()
-            super.submitList(list)
-        }
-    }
-
-    private class AppListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val icon: ImageView? = itemView.findViewById(R.id.icon)
-        val label: TextView? = itemView.findViewById(R.id.label)
-        val packageName: TextView? = itemView.findViewById(R.id.packageName)
-        val checkBox: CheckBox? = itemView.findViewById(R.id.checkBox)
-    }
-
-    private data class AppInfo(
-        val packageName: String,
-        val label: String,
-        val icon: Drawable,
-    )
-
-    companion object {
-        private val itemCallback = object: DiffUtil.ItemCallback<AppInfo>() {
-            override fun areItemsTheSame(oldInfo: AppInfo, newInfo: AppInfo) =
-                oldInfo.packageName == newInfo.packageName
-            
-            override fun areContentsTheSame(oldInfo: AppInfo, newInfo: AppInfo) =
-                oldInfo == newInfo
         }
     }
 }

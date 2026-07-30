@@ -224,6 +224,9 @@
     <string name="search_apps">Search apps</string>
     <string name="hide_developer_status_title">Hide developer status</string>
     <string name="hide_developer_status_summary">Hide developer status from apps</string>
+    <string name="hide_developer_status_count">Hiding developer status from %1$d app(s)</string>
+    <string name="hide_developer_status_no_apps_available">No apps available</string>
+    <string name="hide_developer_status_no_apps_found">No apps found for \"%1$s\"</string>
 
     <!-- System Updates -->
     <string name="play_application_detail_indication_summary">Check for updates</string>
