@@ -53,15 +53,15 @@ import com.android.settingslib.spa.framework.theme.SettingsTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.evolution.settings.fragments.miscellaneous.AppListEntry
-import org.evolution.settings.fragments.miscellaneous.AppPickerItem
-import org.evolution.settings.fragments.miscellaneous.AppPickerSearchField
-import org.evolution.settings.fragments.miscellaneous.SpoofingEmptyState
-import org.evolution.settings.fragments.miscellaneous.SpoofingHeaderCard
-import org.evolution.settings.fragments.miscellaneous.SpoofingLoadingBox
-import org.evolution.settings.fragments.miscellaneous.filterInstalledApps
-import org.evolution.settings.fragments.miscellaneous.killPackages
-import org.evolution.settings.fragments.miscellaneous.targetedFirstComparator
+import org.mist.settings.fragments.miscellaneous.AppListEntry
+import org.mist.settings.fragments.miscellaneous.AppPickerItem
+import org.mist.settings.fragments.miscellaneous.AppPickerSearchField
+import org.mist.settings.fragments.miscellaneous.SpoofingEmptyState
+import org.mist.settings.fragments.miscellaneous.SpoofingHeaderCard
+import org.mist.settings.fragments.miscellaneous.SpoofingLoadingBox
+import org.mist.settings.fragments.miscellaneous.filterInstalledApps
+import org.mist.settings.fragments.miscellaneous.killPackages
+import org.mist.settings.fragments.miscellaneous.targetedFirstComparator
 
 // ---------------------------------------------------------------------------
 // Settings helpers — current-user only. Single read-then-write per toggle,
