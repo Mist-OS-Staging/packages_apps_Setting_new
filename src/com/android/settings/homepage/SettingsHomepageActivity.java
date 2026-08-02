@@ -556,7 +556,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
                 public void onClick(View v) {
                     Intent nIntent = new Intent(Intent.ACTION_MAIN);
                     nIntent.setClassName("com.mist.updater",
-                            "org.mist.updater.UpdatesActivity");
+                            "com.mist.updater.UpdatesActivity");
                     startActivity(nIntent);
                 }
             });
