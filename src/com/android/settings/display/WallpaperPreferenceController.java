@@ -116,11 +116,20 @@ public class WallpaperPreferenceController extends BasePreferenceController {
     @Override
     public boolean handlePreferenceTreeClick(Preference preference) {
         if (getPreferenceKey().equals(preference.getKey())) {
-            final Intent intent = new Intent().setComponent(
-                getComponentName()).putExtra(mWallpaperLaunchExtra, LAUNCHED_SETTINGS);
+            Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+            intent.putExtra(mWallpaperLaunchExtra, LAUNCHED_SETTINGS);
             if (areStylesAvailable()) {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
+
+            if (intent.resolveActivity(mContext.getPackageManager()) == null) {
+                intent = new Intent().setComponent(getComponentName())
+                        .putExtra(mWallpaperLaunchExtra, LAUNCHED_SETTINGS);
+                if (areStylesAvailable()) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+            }
+
             preference.getContext().startActivity(intent);
             return true;
         }
@@ -134,10 +143,16 @@ public class WallpaperPreferenceController extends BasePreferenceController {
     }
 
     private boolean canResolveWallpaperComponent(String className) {
-        final ComponentName componentName = new ComponentName(mWallpaperPackage, className);
         final PackageManager pm = mContext.getPackageManager();
-        final Intent intent = new Intent().setComponent(componentName);
-        final List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0 /* flags */);
+        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0 /* flags */);
+        if (resolveInfos != null && !resolveInfos.isEmpty()) {
+            return true;
+        }
+
+        final ComponentName componentName = new ComponentName(mWallpaperPackage, className);
+        intent = new Intent().setComponent(componentName);
+        resolveInfos = pm.queryIntentActivities(intent, 0 /* flags */);
         return resolveInfos != null && !resolveInfos.isEmpty();
     }
 
