@@ -6350,19 +6350,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name="org.mist.settings.fragments.about.ChangelogActivity"
-                android:label="@string/changelog_title"
-                android:theme="@style/Theme.SubSettingsBase"
-                android:enabled="true"
-                android:exported="true"
-                android:taskAffinity="com.android.settings"
-                android:parentActivityName="Settings">
-            <intent-filter android:priority="70">
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <!-- Face enroll -->
         <activity android:theme="@style/SudThemeGlif.Light"
                   android:name="com.google.android.settings.biometrics.face.FaceEnrollActivityDirector"
