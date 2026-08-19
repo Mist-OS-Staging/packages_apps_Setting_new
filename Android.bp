@@ -77,6 +77,9 @@ android_library {
         "res-product",
         "Mistify/res",
     ],
+
+    asset_dirs: ["Mistify/assets"],
+
     optional_uses_libs: ["com.android.extensions.appfunctions"],
     static_libs: [
         // External dependencies
@@ -108,6 +111,10 @@ android_library {
         "//frameworks/libs/systemui:com_android_systemui_shared_flags_lib",
         "//frameworks/libs/systemui:msdl",
         "WindowManager-Shell-shared-desktopMode",
+        "tensorflowlite_java",
+        "tflite_support_java",
+        "tensorflow-lite-gpu",
+        "tensorflow-lite-gpu-api",
 
         // Settings dependencies
         "FingerprintManagerInteractor",
@@ -228,6 +235,13 @@ android_app {
     uses_libs: ["org.apache.http.legacy"],
     use_resource_processor: true,
     resource_dirs: [],
+    jni_libs: [
+        "libtensorflowlite_jni",
+        "libtensorflowlite_gpu_jni",
+    ],
+    aaptflags: [
+        "-0 .tflite",
+    ],
     flags_packages: [
         "android.app.flags-aconfig",
     ],
