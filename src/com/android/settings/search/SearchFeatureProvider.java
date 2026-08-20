@@ -88,7 +88,6 @@ public interface SearchFeatureProvider {
         }
 
         if (!WizardManagerHelper.isDeviceProvisioned(activity)
-                || !Utils.isPackageEnabled(activity, getSettingsIntelligencePkgName(activity))
                 || WizardManagerHelper.isAnySetupWizard(activity.getIntent())) {
             final ViewGroup parent = (ViewGroup) toolbar.getParent();
             if (parent != null) {
@@ -96,6 +95,7 @@ public interface SearchFeatureProvider {
             }
             return;
         }
+
         // Please forgive me for what I am about to do.
         //
         // Need to make the navigation icon non-clickable so that the entire card is clickable
@@ -115,6 +115,10 @@ public interface SearchFeatureProvider {
                 activity.getPackageManager().queryIntentActivities(intent,
                         PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfos.isEmpty()) {
+            final ViewGroup parent = (ViewGroup) toolbar.getParent();
+            if (parent != null) {
+                parent.setVisibility(View.GONE);
+            }
             return;
         }
 

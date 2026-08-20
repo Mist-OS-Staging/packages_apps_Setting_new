@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import com.android.settings.Utils
 import com.android.settings.search.SearchIndexableResourcesFactory.createSearchIndexableResources
 import com.android.settings.spa.search.SettingsSpaSearchRepository
 import com.android.settingslib.search.SearchIndexableResources
@@ -44,7 +45,8 @@ open class SearchFeatureProviderImpl : SearchFeatureProvider {
             callerPackage == "com.google.android.apps.nexuslauncher"
 
         if (isSettingsPackage || isAllowlistedPackage || 
-            callerPackage == getSettingsIntelligencePkgName(context)) {
+            callerPackage == getSettingsIntelligencePkgName(context) ||
+            callerPackage == "com.google.android.settings.intelligence") {
             return
         }
         throw SecurityException(
@@ -55,10 +57,23 @@ open class SearchFeatureProviderImpl : SearchFeatureProvider {
     override fun getSearchIndexableResources(): SearchIndexableResources =
         lazySearchIndexableResources
 
-    override fun buildSearchIntent(context: Context, pageId: Int): Intent =
-        Intent(Settings.ACTION_APP_SEARCH_SETTINGS)
-            .setPackage(getSettingsIntelligencePkgName(context))
+    override fun buildSearchIntent(context: Context, pageId: Int): Intent {
+        val googlePkg = "com.google.android.settings.intelligence"
+        val aospPkg = getSettingsIntelligencePkgName(context)
+        val targetPkg = when {
+            Utils.isPackageEnabled(context, googlePkg) -> googlePkg
+            Utils.isPackageEnabled(context, aospPkg) -> aospPkg
+            else -> null
+        }
+        if (targetPkg != null) {
+            return Intent(Settings.ACTION_APP_SEARCH_SETTINGS)
+                .setPackage(targetPkg)
+                .putExtra(Intent.EXTRA_REFERRER, buildReferrer(context, pageId))
+        }
+        return Intent("android.settings.SPA_SEARCH_LANDING")
+            .setPackage(context.packageName)
             .putExtra(Intent.EXTRA_REFERRER, buildReferrer(context, pageId))
+    }
 
     protected open fun isSignatureAllowlisted(context: Context, callerPackage: String): Boolean =
         false

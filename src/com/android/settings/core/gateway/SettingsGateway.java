@@ -228,6 +228,7 @@ import com.android.settings.wifi.tether.WifiTetherSettings;
 import org.mist.settings.MistSettings;
 import org.mist.settings.display.refreshrate.ScreenRefreshRateFragment;
 import org.mist.settings.fragments.miscellaneous.SmartPixels;
+import org.mist.settings.fragments.themes.Wallpaper;
 
 public class SettingsGateway {
 
@@ -236,6 +237,7 @@ public class SettingsGateway {
      * security exception if the fragment it needs to display is not in this list.
      */
     public static final String[] ENTRY_FRAGMENTS = {
+            Wallpaper.class.getName(),
             AdvancedConnectedDeviceDashboardFragment.class.getName(),
             CreateShortcut.class.getName(),
             BluetoothPairingDetail.class.getName(),

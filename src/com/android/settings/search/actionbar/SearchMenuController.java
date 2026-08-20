@@ -71,7 +71,13 @@ public class SearchMenuController implements LifecycleObserver, OnCreateOptionsM
                 || WizardManagerHelper.isAnySetupWizard(activity.getIntent())) {
             return;
         }
-        if (!Utils.isPackageEnabled(activity, SettingsIntelligencePkgName)) {
+        final String GoogleSettingsIntelligencePkgName = "com.google.android.settings.intelligence";
+        boolean isSearchAvailable = Utils.isPackageEnabled(activity, SettingsIntelligencePkgName)
+                || Utils.isPackageEnabled(activity, GoogleSettingsIntelligencePkgName)
+                || !activity.getPackageManager().queryIntentActivities(
+                        new Intent("android.settings.SPA_SEARCH_LANDING").setPackage(activity.getPackageName()),
+                        PackageManager.MATCH_DEFAULT_ONLY).isEmpty();
+        if (!isSearchAvailable) {
             return;
         }
         if (menu == null) {
