@@ -19,9 +19,7 @@ package com.android.settings.gestures;
 import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON;
 import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.RemoteException;
 import android.view.Display;
@@ -35,7 +33,6 @@ import com.android.settings.core.BasePreferenceController;
 public class SystemNavigationPreferenceController extends BasePreferenceController {
 
     static final String PREF_KEY_SYSTEM_NAVIGATION = "gesture_system_navigation";
-    private static final String ACTION_QUICKSTEP = "android.intent.action.QUICKSTEP_SERVICE";
 
     public SystemNavigationPreferenceController(Context context, String key) {
         super(context, key);
@@ -60,8 +57,6 @@ public class SystemNavigationPreferenceController extends BasePreferenceControll
     /** Returns {@code true} if gesture is available. */
     public static boolean isGestureAvailable(Context context) {
         boolean hasNavigationBar = false;
-        final boolean configEnabled = context.getResources().getBoolean(
-                com.android.internal.R.bool.config_swipe_up_gesture_setting_available);
 
         try {
             IWindowManager windowManager = WindowManagerGlobal.getWindowManagerService();
@@ -70,24 +65,8 @@ public class SystemNavigationPreferenceController extends BasePreferenceControll
             // no window manager? good luck with that
         }
 
-        // Skip if the swipe up settings are not available
-        // or if on-screen navbar is disabled (for devices with hardware keys)
-        if (!configEnabled || !hasNavigationBar) {
-            return false;
-        }
-
-        // Skip if the recents component is not defined
-        final ComponentName recentsComponentName = ComponentName.unflattenFromString(
-                context.getString(com.android.internal.R.string.config_recentsComponentName));
-        if (recentsComponentName == null) {
-            return false;
-        }
-
-        // Skip if the overview proxy service exists
-        final Intent quickStepIntent = new Intent(ACTION_QUICKSTEP)
-                .setPackage(recentsComponentName.getPackageName());
-        if (context.getPackageManager().resolveService(quickStepIntent,
-                PackageManager.MATCH_SYSTEM_ONLY) == null) {
+        // Skip if on-screen navbar is disabled (for devices with hardware keys)
+        if (!hasNavigationBar) {
             return false;
         }
 

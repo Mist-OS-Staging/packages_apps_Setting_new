@@ -16,10 +16,7 @@
 package com.android.settings.gestures
 
 import android.app.settings.SettingsEnums
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_2BUTTON
 import android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL
 import com.android.internal.R as InternalR
@@ -90,23 +87,7 @@ class SystemNavigationGestureScreen :
             else -> context.getText(R.string.legacy_navigation_title)
         }
 
-    fun Context.isGestureAvailable(): Boolean {
-        // Skip if the swipe up settings are not available
-        if (!resources.getBoolean(InternalR.bool.config_swipe_up_gesture_setting_available)) {
-            return false
-        }
-
-        // Skip if the recents component is not defined
-        val recentsComponentName =
-            ComponentName.unflattenFromString(
-                getString(InternalR.string.config_recentsComponentName)
-            ) ?: return false
-
-        // Skip if the overview proxy service exists
-        val quickStepIntent = Intent(ACTION_QUICKSTEP).setPackage(recentsComponentName.packageName)
-        return packageManager.resolveService(quickStepIntent, PackageManager.MATCH_SYSTEM_ONLY) !=
-            null
-    }
+    fun Context.isGestureAvailable(): Boolean = true
 
     fun Context.isGestureNavigationEnabled(): Boolean =
         NAV_BAR_MODE_GESTURAL ==
@@ -148,8 +129,6 @@ class SystemNavigationGestureScreen :
 
     companion object {
         const val KEY = "gesture_system_navigation_input_summary"
-
-        private const val ACTION_QUICKSTEP = "android.intent.action.QUICKSTEP_SERVICE"
     }
 }
 // LINT.ThenChange(SystemNavigationGestureSettings.java, SystemNavigationPreferenceController.java)
