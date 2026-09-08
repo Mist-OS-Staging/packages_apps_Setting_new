@@ -189,9 +189,11 @@ public class SettingsBaseActivity extends FragmentActivity implements CategoryHa
         final int transitionType = getTransitionType(intent);
         super.startActivityForResult(intent, requestCode, options);
         if (transitionType == TransitionType.TRANSITION_SLIDE) {
+        if (!com.android.internal.util.mist.MistifyFluidMotionHelper.isFluidAnimationEnabled(this)) {
             overridePendingTransition(
                     com.google.android.setupdesign.R.anim.sud_slide_next_in,
                     com.google.android.setupdesign.R.anim.sud_slide_next_out);
+            }
         } else if (transitionType == TransitionType.TRANSITION_FADE) {
             overridePendingTransition(
                     android.R.anim.fade_in, com.google.android.setupdesign.R.anim.sud_stay);
